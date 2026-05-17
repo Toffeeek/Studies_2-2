@@ -32,6 +32,8 @@ private:
         }
     }
 
+
+
 public:
     Graph(vector<vector<pair<int, int>>> adjacencyList)
     {
@@ -190,6 +192,80 @@ public:
         cout << "Shortest distance: " << dist[dest] << endl;
 
         return path;
+    }
+
+    int kthCost(int src, int dest, int k)
+    {
+        // vector<int> path = kthPath(src, dest, k);
+        //
+        // if(path.size() == 1 && path[0] == -1)
+        //     return -1;
+        //
+        // int totalCost = 0;
+        //
+        // for each consecutive pair path[i] -> path[i + 1]:
+        //     find that edge in adjacencyList
+        //     add its weight to totalCost
+        //
+        // return totalCost;
+    }
+    vector<int> kthPath(int src, int dest, int k) const
+    {
+        // Each item: {totalCost, pathSoFar}
+        priority_queue
+        <
+            pair<int, vector<int>>,
+            vector<pair<int, vector<int>>>,
+            greater<pair<int, vector<int>>>
+        > pq;
+
+        pq.push({0, {src}});
+
+        int foundPaths = 0;
+
+        while(!pq.empty())
+        {
+            int currCost = pq.top().first;
+            vector<int> currPath = pq.top().second;
+            pq.pop();
+
+            int currVer = currPath.back();
+
+            if(currVer == dest)
+            {
+                foundPaths++;
+
+                if(foundPaths == k)
+                {
+                    cout << k << "-th shortest path cost = " << currCost << endl;
+                    return currPath;
+                }
+            }
+
+            for(auto [nextVer, nextCost] : adjList[currVer])
+            {
+                bool alreadyInPath = false;
+
+                for(int v : currPath)
+                {
+                    if(v == nextVer)
+                    {
+                        alreadyInPath = true;
+                        break;
+                    }
+                }
+
+                if(alreadyInPath)
+                    continue;
+
+                vector<int> newPath = currPath;
+                newPath.push_back(nextVer);
+
+                pq.push({currCost + nextCost, newPath});
+            }
+        }
+
+        return vector<int>{-1};
     }
 
     void printAdjacencyList()
