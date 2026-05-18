@@ -218,7 +218,6 @@ public:
 
 int main()
 {
-    // cout << "Running\n";
     vector<vector<pair<int, int>>> adjList(5);
     adjList[0].push_back({1, -1});
     adjList[0].push_back({2, 4});

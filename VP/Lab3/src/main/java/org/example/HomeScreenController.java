@@ -20,7 +20,7 @@ public class HomeScreenController
         System.out.println("handler runs");
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("loginScreen.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/loginScreen.fxml"));
             Scene loginScene = new Scene(loader.load());
 
             Stage stage = (Stage) loginButton.getScene().getWindow();

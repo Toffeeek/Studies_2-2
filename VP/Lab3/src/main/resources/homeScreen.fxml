@@ -10,8 +10,8 @@
       <VBox alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label text="WELCOME TO BANK" />
-            <Button mnemonicParsing="false" onAction="#loginHandler" text="LOGIN" />
-            <Button mnemonicParsing="false" onAction="#registerHandler" text="REGISTER" />
+            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginHandler" text="LOGIN" />
+            <Button fx:id="registerButton" mnemonicParsing="false" onAction="#registerHandler" text="REGISTER" />
          </children>
       </VBox>
    </children>
