@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0" spacing="18.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainController">
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+   <children>
+      <Label text="Add Task" />
+      <HBox alignment="CENTER_LEFT" spacing="20.0">
+         <children>
+            <Label minWidth="130.0" text="Task Name:" />
+            <TextField fx:id="nameField" promptText="Enter task name" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" spacing="20.0">
+         <children>
+            <Label minWidth="130.0" text="Task Description:" />
+            <TextArea fx:id="descField" prefRowCount="3" promptText="Enter task description" wrapText="true" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" spacing="20.0">
+         <children>
+            <Label minWidth="130.0" text="Deadline:" />
+            <DatePicker fx:id="deadlinePicker" promptText="Select deadline" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" spacing="12.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#handleAddTask" text="Add Task" />
+            <Button mnemonicParsing="false" onAction="#showAllTasks" text="All Tasks" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

@@ -1,0 +1,111 @@
+.root-container {
+    -fx-background-color: #f0f0ff;
+}
+
+.title-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3b0764;
+}
+
+.form-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(100,0,200,0.12), 8, 0, 0, 2);
+}
+
+.field-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6b21a8;
+}
+
+.input-field {
+    -fx-font-size: 14px;
+    -fx-background-color: #faf5ff;
+    -fx-border-color: #c4b5fd;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 8 12;
+}
+
+.input-field:focused {
+    -fx-border-color: #7c3aed;
+    -fx-background-color: #ede9fe;
+}
+
+.add-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #1134a6;
+    -fx-background-radius: 6;
+    -fx-padding: 10 12;
+    -fx-cursor: hand;
+}
+
+.add-button:hover {
+    -fx-background-color: #000080;
+}
+
+
+.student-table {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+    -fx-border-color: #ddd6fe;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(100,0,200,0.10), 8, 0, 0, 2);
+}
+
+.student-table .column-header-background {
+    -fx-background-color: #5b21b6;
+}
+
+.student-table .column-header,
+.student-table .column-header .filler {
+    -fx-background-color: #5b21b6;
+    -fx-border-color: #7c3aed;
+    -fx-border-width: 0 1 0 0;
+}
+
+.student-table .column-header .label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0 10;
+}
+
+/* ── Rows ───────────────────────────────────────────────────── */
+.student-table .table-row-cell {
+    -fx-font-size: 14px;
+    -fx-text-fill: #3b0764;
+    -fx-border-color: transparent transparent #ede9fe transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 0;
+}
+
+.student-table .table-row-cell:even {
+    -fx-background-color: #faf5ff;
+}
+
+.student-table .table-row-cell:odd {
+    -fx-background-color: #ffffff;
+}
+
+.student-table .table-row-cell:hover {
+    -fx-background-color: #ddd6fe;
+}
+
+.student-table .table-row-cell:selected {
+    -fx-background-color: #6693f5;
+}
+
+.student-table .table-row-cell:selected .table-cell {
+    -fx-text-fill: #ffffff;
+}
+
+.student-table .table-cell {
+    -fx-padding: 10 12;
+}
