@@ -1,13 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+const long long INF = 2e18;
+
 class Graph
 {
     int V;
-    vector<vector<pair<int, int>>> adjList;
+    vector<vector<pair<int, long long>>> adjList;
 
 public:
-    Graph(vector<vector<pair<int, int>>> adjList) : adjList(adjList)
+    Graph(const vector<vector<pair<int,long long>>>& adjList) : adjList(adjList)
     {
         this->V = adjList.size();
     }
@@ -55,12 +57,12 @@ public:
     {
         vector<bool> visited(V, false);
         vector<int> parent(V, -1);
-        vector<int> cost(V, INT_MAX);
+        vector<long long> cost(V, INF);
         priority_queue
         <
-            pair<int, int>,
-            vector<pair<int, int>>,
-            greater<pair<int, int>>
+            pair<long long, int>,
+            vector<pair<long long, int>>,
+            greater<pair<long long, int>>
         > pq;
 
         cost[src] = 0;
@@ -68,8 +70,11 @@ public:
         while (!pq.empty())
         {
             int currVer = pq.top().second;
-            int currCost = pq.top().first;
+            long long currCost = pq.top().first;
             pq.pop();
+
+            if (visited[currVer])
+                continue;
 
             visited[currVer] = true;
 
@@ -84,7 +89,7 @@ public:
             }
         }
 
-        if (cost[dest] == INT_MAX)
+        if (cost[dest] == INF)
         {
             return vector<int> {-1};
         }
@@ -104,16 +109,16 @@ public:
     {
         priority_queue
         <
-            pair<int, vector<int>>,
-            vector<pair<int, vector<int>>>,
-            greater<pair<int, vector<int>>>
+            pair<long long, vector<int>>,
+            vector<pair<long long, vector<int>>>,
+            greater<pair<long long, vector<int>>>
         > pq;
 
         pq.push({0, {src}});
         int foundPaths = 0;
         while (!pq.empty())
         {
-            int currCost = pq.top().first;
+            long long currCost = pq.top().first;
             auto currPath = pq.top().second;
             int  currVer = currPath.back();
             pq.pop();
@@ -142,34 +147,54 @@ public:
 
         return vector<int> {-1};
     }
-    auto kthCost(int src, int dest, int k)
+    auto kCosts(int src, int dest, int k)
     {
-        auto path = kthPath(src, dest, k);
-        if (path.size() == 1 && path[0] == -1)
-        {
-            return pair<bool, int> {false, -1};
-        }
+        vector<priority_queue<long long>> best(V);
+        priority_queue
+        <
+            pair<long long, int>,
+            vector<pair<long long, int>>,
+            greater<pair<long long, int>>
+        > pq;
 
-        int cost = 0;
-        int currVerIdx = 0;
+        best[src].push(0);
+        pq.push({0, src});
 
-        while (path[currVerIdx] != dest)
+        while (!pq.empty())
         {
-            for (auto [nextVer, nextCost] : adjList[path[currVerIdx]])
+            auto [currCost, currVer] = pq.top();
+            pq.pop();
+
+            for (auto [nextVer, nextCost] : adjList[currVer])
             {
-                if (nextVer == path[currVerIdx + 1])
+                long long newCost = currCost + nextCost;
+
+                if (best[nextVer].size() < k)
                 {
-                    cost += nextCost;
-                    currVerIdx++;
-                    break;
+                    best[nextVer].push(newCost);
+                    pq.push({newCost, nextVer});
+                }
+                else if (best[nextVer].top() > newCost)
+                {
+                    best[nextVer].pop();
+                    best[nextVer].push(newCost);
+                    pq.push({newCost, nextVer});
                 }
             }
         }
-        return pair<bool, int> {true, cost};
+
+        vector<long long> kCosts;
+        while (!best[dest].empty())
+        {
+            kCosts.push_back(best[dest].top());
+            best[dest].pop();
+        }
+        reverse(kCosts.begin(), kCosts.end());
+        return kCosts;
     }
     auto bellmanford(int src, int dest)
     {
-        vector<int> cost(V, INT_MAX);
+        vector<long long> cost(V, INF);
         vector<int> parent(V, -1);
         cost[src] = 0;
 
@@ -179,7 +204,7 @@ public:
             {
                 for (auto [nextVer, nextCost] : adjList[currVer])
                 {
-                    if (cost[currVer] != INT_MAX && cost[nextVer] > cost[currVer] + nextCost)
+                    if (cost[currVer] != INF && cost[nextVer] > cost[currVer] + nextCost)
                     {
                         parent[nextVer] = currVer;
                         cost[nextVer] = cost[currVer] + nextCost;
@@ -192,14 +217,14 @@ public:
         {
             for (auto [nextVer, nextCost] : adjList[currVer])
             {
-                if (cost[currVer] != INT_MAX && cost[nextVer] > cost[currVer] + nextCost)
+                if (cost[currVer] != INF && cost[nextVer] > cost[currVer] + nextCost)
                 {
                     return vector<int> {-1};
                 }
             }
         }
 
-        if (cost[dest] == INT_MAX)
+        if (cost[dest] == INF)
         {
             return vector<int> {-1};
         }
@@ -214,11 +239,58 @@ public:
         reverse(path.begin(), path.end());
         return path;
     }
+    auto floydWarshall()
+    {
+        vector<vector<long long>> cost(V, vector<long long>(V, INF));
+        vector<vector<int>> nextVertex(V, vector<int>(V, -1));
+
+        for (int i = 0; i < V; i++)
+        {
+            cost[i][i] = 0;
+            nextVertex[i][i] = i;
+        }
+
+        for (int i = 0; i < V; i++)
+        {
+            for (auto [nextVer, nextCost] : adjList[i])
+            {
+                cost[i][nextVer] = nextCost;
+                nextVertex[i][nextVer] = nextVer;
+            }
+        }
+
+        for (int k = 0; k < V; k++)
+        {
+            for (int i = 0; i < V; i++)
+            {
+                for (int j = 0; j < V; j++)
+                {
+                    if (cost[k][j] != INF && cost[i][k] && cost[i][j] > cost[k][j] + cost[i][k])
+                    {
+                        cost[i][j] = cost[k][j] + cost[i][k];
+                        nextVertex[i][j] = nextVertex[i][k];
+                    }
+                }
+            }
+        }
+        return pair(cost, nextVertex);
+    }
+    auto floydWarshallPath(int src, int dest, const vector<vector<int>> &nextVertex)
+    {
+        vector<int> path;
+        int currVer = src;
+        while (currVer != dest)
+        {
+            path.push_back(currVer);
+            currVer = nextVertex[src][currVer];
+        }
+        return path;
+    }
 };
 
 int main()
 {
-    vector<vector<pair<int, int>>> adjList(5);
+    vector<vector<pair<int, long long>>> adjList(5);
     adjList[0].push_back({1, -1});
     adjList[0].push_back({2, 4});
     adjList[1].push_back({2, 3});
@@ -253,16 +325,26 @@ int main()
     }
     cout << "\b\b\b" << endl;
 
-    cout << "Cost of 3rd best path from 0 to 2: ";
-    auto cost_3rd = g.kthCost(0, 2, 3);
-    if (cost_3rd.first == true)
-        cout << cost_3rd.second << endl;
-    else
-        cout << "No such path exists\n";
+    cout << "Costs of 3 best paths from 0 to 2: ";
+    auto cost_k3 = g.kCosts(`0, 2, 3);
+    for (long long c : cost_k3)
+    {
+        cout << c << " ";
+    }
+    cout << endl;
 
     cout << "Bellman-Ford from 0 to 4: ";
     auto path_bellmanford = g.bellmanford(0, 4);
     for (auto ver : path_bellmanford)
+    {
+        cout << ver << " -> ";
+    }
+    cout << "\b\b\b" << endl;
+
+    cout << "Floyd Warshall:\n";
+    auto [cost, nextVer] = g.floydWarshall();
+    auto fwPath_23 = g.floydWarshallPath(2, 3, nextVer);
+    for (auto ver : fwPath_23)
     {
         cout << ver << " -> ";
     }
