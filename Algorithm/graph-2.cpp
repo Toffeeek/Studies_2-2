@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const long long INF = 2e18;
+constexpr long long INF = 2e18;
 
 class Graph
 {
@@ -134,11 +134,6 @@ public:
 
             for (auto [nextVer, nextCost] : adjList[currVer])
             {
-                if (find(currPath.begin(), currPath.end(), nextVer) != currPath.end())
-                {
-                    continue;
-                }
-
                 vector<int> newPath(currPath);
                 newPath.push_back(nextVer);
                 pq.push({currCost + nextCost, newPath});
@@ -241,21 +236,18 @@ public:
     }
     auto floydWarshall()
     {
-        vector<vector<long long>> cost(V, vector<long long>(V, INF));
-        vector<vector<int>> nextVertex(V, vector<int>(V, -1));
+        vector<vector<pair<int, long long>>> adjMatrix(V,vector<pair<int, long long>>(V, {-1, INF}));
 
         for (int i = 0; i < V; i++)
         {
-            cost[i][i] = 0;
-            nextVertex[i][i] = i;
+            adjMatrix[i][i] = {i, 0};
         }
 
-        for (int i = 0; i < V; i++)
+        for (int currVer = 0; currVer < V; currVer++)
         {
-            for (auto [nextVer, nextCost] : adjList[i])
+            for (auto [nextVer, nextCost] : adjList[currVer])
             {
-                cost[i][nextVer] = nextCost;
-                nextVertex[i][nextVer] = nextVer;
+                adjMatrix[currVer][nextVer] = {nextVer, nextCost};
             }
         }
 
@@ -265,32 +257,45 @@ public:
             {
                 for (int j = 0; j < V; j++)
                 {
-                    if (cost[k][j] != INF && cost[i][k] && cost[i][j] > cost[k][j] + cost[i][k])
+                    if (adjMatrix[i][k].second != INF && adjMatrix[k][j].second != INF &&
+                        adjMatrix[i][j].second > adjMatrix[i][k].second + adjMatrix[k][j].second)
                     {
-                        cost[i][j] = cost[k][j] + cost[i][k];
-                        nextVertex[i][j] = nextVertex[i][k];
+                        adjMatrix[i][j].first = adjMatrix[i][k].first;
+                        adjMatrix[i][j].second = adjMatrix[i][k].second + adjMatrix[k][j].second;
                     }
                 }
             }
         }
-        return pair(cost, nextVertex);
+
+        return adjMatrix;
     }
-    auto floydWarshallPath(int src, int dest, const vector<vector<int>> &nextVertex)
+
+    auto floydWarshallPath(int src,int dest,const vector<vector<pair<int, long long>>>& adjMatrix)
     {
+        if (adjMatrix[src][dest].first == -1)
+        {
+            return vector<int>{-1};
+        }
+
         vector<int> path;
         int currVer = src;
+
         while (currVer != dest)
         {
             path.push_back(currVer);
-            currVer = nextVertex[src][currVer];
+            currVer = adjMatrix[currVer][dest].first;
         }
+
+        path.push_back(dest);
         return path;
     }
 };
 
 int main()
 {
-    vector<vector<pair<int, long long>>> adjList(5);
+    constexpr int V = 5;
+
+    vector<vector<pair<int, long long>>> adjList(V);
     adjList[0].push_back({1, -1});
     adjList[0].push_back({2, 4});
     adjList[1].push_back({2, 3});
@@ -326,7 +331,7 @@ int main()
     cout << "\b\b\b" << endl;
 
     cout << "Costs of 3 best paths from 0 to 2: ";
-    auto cost_k3 = g.kCosts(`0, 2, 3);
+    auto cost_k3 = g.kCosts(0, 2, 3);
     for (long long c : cost_k3)
     {
         cout << c << " ";
@@ -342,8 +347,9 @@ int main()
     cout << "\b\b\b" << endl;
 
     cout << "Floyd Warshall:\n";
-    auto [cost, nextVer] = g.floydWarshall();
-    auto fwPath_23 = g.floydWarshallPath(2, 3, nextVer);
+    auto adjMatrix = g.floydWarshall();
+
+    auto fwPath_23 = g.floydWarshallPath(2, 3, adjMatrix);
     for (auto ver : fwPath_23)
     {
         cout << ver << " -> ";
