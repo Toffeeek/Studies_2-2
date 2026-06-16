@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Main" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.example.wordle.Main" />
+    <module name="Lab7" />
+    <option name="VM_PARAMETERS" value="--module-path /usr/lib/jvm/java-21-openjdk/lib/javafx.base.jar:/usr/lib/jvm/java-21-openjdk/lib/javafx.graphics.jar:/usr/lib/jvm/java-21-openjdk/lib/javafx.controls.jar:/usr/lib/jvm/java-21-openjdk/lib/javafx.fxml.jar --add-modules javafx.controls,javafx.fxml" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
