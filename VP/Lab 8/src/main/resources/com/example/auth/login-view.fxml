@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="540.0" prefWidth="720.0" styleClass="root-pane" stylesheets="@styles.css"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.auth.LoginController">
+    <center>
+        <VBox alignment="CENTER" spacing="22.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="36.0" left="42.0" right="42.0" top="36.0"/>
+            </padding>
+            <VBox alignment="CENTER" spacing="8.0">
+                <Label text="Login" styleClass="app-title"/>
+                <Label text="Sign in with your registered account" styleClass="app-subtitle"/>
+            </VBox>
+            <VBox spacing="18.0" styleClass="form-panel">
+                <GridPane hgap="14.0" vgap="14.0">
+                    <Label text="Email" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <TextField fx:id="emailField" promptText="you@example.com"
+                               GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                    <Label text="Password" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <PasswordField fx:id="passwordField" promptText="Password"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                </GridPane>
+                <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                    <Label fx:id="statusLabel" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="status-label"/>
+                    <Button fx:id="loginButton" text="Login" onAction="#handleLogin" defaultButton="true"
+                            styleClass="primary-button"/>
+                </HBox>
+                <Separator/>
+                <HBox alignment="CENTER" spacing="10.0">
+                    <Label text="Need an account?" styleClass="hint-label"/>
+                    <Button text="Create Account" onAction="#handleOpenSignup" styleClass="link-button"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>
