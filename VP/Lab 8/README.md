@@ -1,15 +1,22 @@
-# JavaFX Login/Register with PostgreSQL JDBC
+# Student Management System with MySQL JDBC
 
-A JavaFX login/register desktop app that stores users in PostgreSQL through JDBC. The first screen is login, with a button that opens the signup screen. The FXML files are in `src/main/resources/com/example/auth`.
+Console-based Java student management app using JDBC and MySQL.
 
-The app creates this table automatically when it can connect:
+Main classes:
+
+- `database_connection.DatabaseConnection`
+- `database_connection.Student`
+- `database_connection.StudentDAO`
+- `database_connection.Main`
+
+The app creates the `students` table automatically when it can connect:
 
 ```sql
-CREATE TABLE IF NOT EXISTS users (
-    id BIGSERIAL PRIMARY KEY,
-    full_name VARCHAR(120) NOT NULL,
-    email VARCHAR(180) NOT NULL UNIQUE,
-    password VARCHAR(120) NOT NULL
+CREATE TABLE IF NOT EXISTS students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(120) NOT NULL,
+    department VARCHAR(120) NOT NULL,
+    cgpa DOUBLE NOT NULL
 );
 ```
 
@@ -18,35 +25,38 @@ CREATE TABLE IF NOT EXISTS users (
 Default values:
 
 ```text
-DB_URL=jdbc:postgresql://localhost:5432/javafx_auth
-DB_USER=postgres
-DB_PASSWORD=postgres
+DB_URL=jdbc:mysql://localhost:3306/vpl_lab
+DB_USER=root
+DB_PASSWORD=mysql
 ```
 
 Create the database before running:
 
 ```sql
-CREATE DATABASE javafx_auth;
+CREATE DATABASE vpl_lab;
 ```
 
 You can override the defaults with environment variables.
 
-## Run
+## Arch Linux MySQL/MariaDB setup
 
-This machine has JavaFX jars in `/usr/share/java/java-openjfx`.
-Those jars are JavaFX 25, so use JDK 25 with them. If you stay on JDK 21, install/download JavaFX 21 and point `JAVAFX_MODULE_PATH` to that SDK instead.
-The PostgreSQL JDBC driver is stored in `lib/postgresql-42.7.13.jar`.
-
-In IntelliJ, set the project SDK to `/usr/lib/jvm/java-25-openjdk`, add JavaFX and the PostgreSQL JDBC jar as project libraries, then run `com.example.auth.Main`.
-This project intentionally does not use `module-info.java`, which avoids the common `module not found: javafx.controls` build error in lab setups.
-
-Command-line example:
+This machine is Arch Linux. MariaDB is the MySQL-compatible server available from the official package repository.
 
 ```bash
-export JAVAFX_LIB=/usr/share/java/java-openjfx
-export POSTGRES_JAR=lib/postgresql-42.7.13.jar
-mkdir -p out
-javac -cp "$JAVAFX_LIB/*:$POSTGRES_JAR" -d out $(find src/main/java -name '*.java')
-cp -r src/main/resources/* out/
-java --enable-native-access=javafx.graphics -Djava.library.path=/usr/lib/java-openjfx -Dprism.order=sw --module-path "$JAVAFX_LIB" --add-modules javafx.controls,javafx.fxml -cp "out:$POSTGRES_JAR" com.example.auth.Main
+sudo pacman -S --needed mariadb mariadb-clients
+sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+sudo systemctl enable --now mariadb
+sudo mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'mysql'; CREATE DATABASE IF NOT EXISTS vpl_lab;"
+```
+
+If MariaDB was already initialized before, skip the `mariadb-install-db` command.
+
+## Run
+
+The MySQL Connector/J jar should be stored in `lib/mysql-connector-j.jar`.
+
+```bash
+mkdir -p build/classes
+javac -cp lib/mysql-connector-j.jar -d build/classes $(find src/main/java -name '*.java')
+java -cp "build/classes:lib/mysql-connector-j.jar" database_connection.Main
 ```

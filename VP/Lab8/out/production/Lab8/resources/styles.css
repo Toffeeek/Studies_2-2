@@ -1,0 +1,72 @@
+.root-pane {
+    -fx-background-color: #f5f7fb;
+    -fx-font-family: "Inter", "Segoe UI", "Arial", sans-serif;
+}
+
+.auth-card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d7deea;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 28;
+    -fx-max-width: 460;
+}
+
+.title-label {
+    -fx-font-size: 28;
+    -fx-font-weight: 800;
+    -fx-text-fill: #1f2937;
+}
+
+.subtitle-label {
+    -fx-font-size: 13;
+    -fx-text-fill: #667085;
+}
+
+.field-label {
+    -fx-min-width: 84;
+    -fx-font-weight: 700;
+    -fx-text-fill: #344054;
+}
+
+.text-field,
+.password-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cfd6e3;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 9 11;
+}
+
+.text-field:focused,
+.password-field:focused {
+    -fx-border-color: #2563eb;
+}
+
+.button {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-cursor: hand;
+    -fx-font-weight: 700;
+    -fx-padding: 9 18;
+}
+
+.primary-button {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: #ffffff;
+}
+
+.secondary-button {
+    -fx-background-color: #e8edf7;
+    -fx-text-fill: #1f2937;
+}
+
+.status-label {
+    -fx-font-size: 12;
+    -fx-text-fill: #b42318;
+}
+
+.success-label {
+    -fx-font-size: 12;
+    -fx-text-fill: #087443;
+}

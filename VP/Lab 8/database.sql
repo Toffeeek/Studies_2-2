@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS vpl_lab;
+
+USE vpl_lab;
+
+CREATE TABLE IF NOT EXISTS students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(120) NOT NULL,
+    department VARCHAR(120) NOT NULL,
+    cgpa DOUBLE NOT NULL
+);

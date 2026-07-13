@@ -1,47 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="520.0"
-            prefHeight="760.0" prefWidth="560.0"
-            stylesheets="@styles.css"
-            styleClass="root-pane"
-            xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.wordle.WordleController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="520.0" prefHeight="760.0" prefWidth="560.0" styleClass="root-pane" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.wordle.WordleController">
     <top>
         <VBox alignment="CENTER" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="16.0" left="24.0" right="24.0" top="12.0"/>
+                <Insets bottom="16.0" left="24.0" right="24.0" top="12.0" />
             </padding>
-            <Region styleClass="top-rule" VBox.vgrow="NEVER"/>
-            <Label styleClass="title-label" text="WORDLE"/>
-            <Region styleClass="bottom-rule" VBox.vgrow="NEVER"/>
+            <Region styleClass="top-rule" VBox.vgrow="NEVER" />
+            <Label styleClass="title-label" text="WORDLE" />
+            <Region styleClass="bottom-rule" VBox.vgrow="NEVER" />
         </VBox>
     </top>
     <center>
         <VBox alignment="CENTER" spacing="18.0" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="8.0" left="24.0" right="24.0" top="8.0"/>
+                <Insets bottom="8.0" left="24.0" right="24.0" top="8.0" />
             </padding>
-            <Label fx:id="feedbackLabel" alignment="CENTER" maxWidth="Infinity" minHeight="28.0" styleClass="feedback-label"/>
-            <GridPane fx:id="boardGrid" alignment="CENTER" hgap="6.0" vgap="6.0"/>
+            <Label fx:id="feedbackLabel" alignment="CENTER" maxWidth="Infinity" minHeight="28.0" styleClass="feedback-label" />
+            <GridPane fx:id="boardGrid" alignment="CENTER" hgap="6.0" vgap="6.0">
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                <Label styleClass="tile, tile-empty" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+               <ColumnConstraints />
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
         </VBox>
     </center>
     <bottom>
         <VBox fx:id="keyboardBox" alignment="CENTER" spacing="8.0" BorderPane.alignment="CENTER">
             <padding>
-                <Insets bottom="24.0" left="16.0" right="16.0" top="20.0"/>
+                <Insets bottom="24.0" left="16.0" right="16.0" top="20.0" />
             </padding>
-            <HBox fx:id="keyboardRowOne" alignment="CENTER" spacing="6.0"/>
-            <HBox fx:id="keyboardRowTwo" alignment="CENTER" spacing="6.0"/>
-            <HBox fx:id="keyboardRowThree" alignment="CENTER" spacing="6.0"/>
+            <HBox fx:id="keyboardRowOne" alignment="CENTER" spacing="6.0">
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="Q" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="W" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="E" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="R" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="T" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="Y" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="U" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="I" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="O" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="P" />
+            </HBox>
+            <HBox fx:id="keyboardRowTwo" alignment="CENTER" spacing="6.0">
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="A" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="S" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="D" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="F" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="G" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="H" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="J" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="K" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="L" />
+            </HBox>
+            <HBox fx:id="keyboardRowThree" alignment="CENTER" spacing="6.0">
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key, keyboard-key-wide" text="ENTER" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="Z" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="X" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="C" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="V" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="B" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="N" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key" text="M" />
+                <Button focusTraversable="false" onAction="#handleKeyboardButton" styleClass="keyboard-key, keyboard-key-wide" text="DEL" />
+            </HBox>
         </VBox>
     </bottom>
 </BorderPane>

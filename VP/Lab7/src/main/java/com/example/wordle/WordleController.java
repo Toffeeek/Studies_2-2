@@ -1,27 +1,30 @@
 package com.example.wordle;
 
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.event.ActionEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
-import java.util.EnumMap;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class WordleController {
     private static final int WORD_LENGTH = 5;
     private static final int MAX_ATTEMPTS = 6;
-    private static final String[] KEY_ROWS = {"QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"};
 
     @FXML
     private GridPane boardGrid;
@@ -48,8 +51,8 @@ public class WordleController {
 
     @FXML
     private void initialize() {
-        createBoard();
-        createKeyboard();
+        wireBoardFromFxml();
+        wireKeyboardFromFxml();
         startNewGame();
         Platform.runLater(() -> {
             Node root = boardGrid.getScene().getRoot();
@@ -58,49 +61,47 @@ public class WordleController {
         });
     }
 
-    private void createBoard() {
-        boardGrid.getChildren().clear();
-        for (int row = 0; row < MAX_ATTEMPTS; row++) {
-            for (int col = 0; col < WORD_LENGTH; col++) {
-                Label tile = new Label();
-                tile.getStyleClass().addAll("tile", "tile-empty");
-                tiles[row][col] = tile;
-                boardGrid.add(tile, col, row);
+    private void wireBoardFromFxml() {
+        for (Node node : boardGrid.getChildren()) {
+            if (node instanceof Label tile) {
+                Integer row = GridPane.getRowIndex(tile);
+                Integer column = GridPane.getColumnIndex(tile);
+                int rowIndex = row == null ? 0 : row;
+                int columnIndex = column == null ? 0 : column;
+                if (rowIndex < MAX_ATTEMPTS && columnIndex < WORD_LENGTH) {
+                    tiles[rowIndex][columnIndex] = tile;
+                }
             }
         }
     }
 
-    private void createKeyboard() {
-        addLetterRow(keyboardRowOne, KEY_ROWS[0]);
-        addLetterRow(keyboardRowTwo, KEY_ROWS[1]);
-
-        Button enter = createKey("ENTER");
-        enter.getStyleClass().add("keyboard-key-wide");
-        enter.setOnAction(event -> commitGuess());
-        keyboardRowThree.getChildren().add(enter);
-
-        addLetterRow(keyboardRowThree, KEY_ROWS[2]);
-
-        Button delete = createKey("DEL");
-        delete.getStyleClass().add("keyboard-key-wide");
-        delete.setOnAction(event -> deleteLetter());
-        keyboardRowThree.getChildren().add(delete);
+    private void wireKeyboardFromFxml() {
+        registerKeyboardRow(keyboardRowOne);
+        registerKeyboardRow(keyboardRowTwo);
+        registerKeyboardRow(keyboardRowThree);
     }
 
-    private void addLetterRow(HBox rowBox, String letters) {
-        for (char letter : letters.toCharArray()) {
-            Button button = createKey(String.valueOf(letter));
-            button.setOnAction(event -> addLetter(letter));
-            keyboardButtons.put(letter, button);
-            rowBox.getChildren().add(button);
+    private void registerKeyboardRow(HBox rowBox) {
+        for (Node node : rowBox.getChildren()) {
+            if (node instanceof Button button && button.getText().length() == 1) {
+                keyboardButtons.put(button.getText().charAt(0), button);
+            }
         }
     }
 
-    private Button createKey(String text) {
-        Button button = new Button(text);
-        button.getStyleClass().add("keyboard-key");
-        button.setFocusTraversable(false);
-        return button;
+    @FXML
+    private void handleKeyboardButton(ActionEvent event) {
+        if (!(event.getSource() instanceof Button button)) {
+            return;
+        }
+        String value = button.getText();
+        if ("ENTER".equals(value)) {
+            commitGuess();
+        } else if ("DEL".equals(value)) {
+            deleteLetter();
+        } else if (value.length() == 1) {
+            addLetter(value.charAt(0));
+        }
     }
 
     private void startNewGame() {
@@ -264,40 +265,36 @@ public class WordleController {
     }
 
     private void showResultDialog(boolean won) {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(boardGrid.getScene().getWindow());
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.setTitle(won ? "Congratulations" : "Out of tries");
-        dialog.getDialogPane().getStyleClass().add("result-dialog");
-        dialog.getDialogPane().getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("result-dialog.fxml"));
+            Parent content = loader.load();
 
-        ButtonType playAgain = new ButtonType(won ? "Play Again" : "Try Again");
-        dialog.getDialogPane().getButtonTypes().add(playAgain);
-        dialog.getDialogPane().setContent(createDialogContent(won));
-        dialog.setOnHidden(event -> startNewGame());
-        dialog.showAndWait();
-    }
+            Stage dialog = new Stage(StageStyle.UNDECORATED);
+            ResultDialogController controller = loader.getController();
+            controller.setResult(won, answer.word(), answer.meaning(), currentRow + 1, () -> {
+                dialog.close();
+                startNewGame();
+            });
 
-    private VBox createDialogContent(boolean won) {
-        Label heading = new Label(won ? "Congratulations!" : "Out of tries");
-        heading.getStyleClass().add("result-heading");
+            dialog.initOwner(boardGrid.getScene().getWindow());
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.setTitle(won ? "Congratulations" : "Out of tries");
 
-        Label prefix = new Label(won ? "You found" : "The word was");
-        prefix.getStyleClass().add("result-meaning");
+            Scene scene = new Scene(content);
+            scene.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ESCAPE) {
+                    dialog.close();
+                    startNewGame();
+                }
+            });
 
-        Label word = new Label(answer.word());
-        word.getStyleClass().add("result-word");
-
-        Label meaning = new Label(answer.meaning());
-        meaning.setMaxWidth(260);
-        meaning.getStyleClass().add("result-meaning");
-
-        VBox content = new VBox(heading, prefix, word, meaning);
-        content.setFillWidth(true);
-        content.setMaxWidth(320);
-        content.setAlignment(javafx.geometry.Pos.CENTER);
-        content.getStyleClass().add("result-content");
-        return content;
+            dialog.setScene(scene);
+            dialog.setResizable(false);
+            dialog.setOnCloseRequest(event -> startNewGame());
+            dialog.showAndWait();
+        } catch (IOException exception) {
+            throw new IllegalStateException("Could not load result dialog.", exception);
+        }
     }
 
     private void setTileState(Label tile, String stateClass) {
