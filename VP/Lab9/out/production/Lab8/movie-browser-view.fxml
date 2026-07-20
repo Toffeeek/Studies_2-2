@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            prefHeight="720.0"
+            prefWidth="1040.0"
+            stylesheets="@styles.css">
+    <styleClass>
+        <String fx:value="app-root" />
+        <String fx:value="dark" />
+    </styleClass>
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12.0">
+            <styleClass>
+                <String fx:value="top-bar" />
+            </styleClass>
+
+            <Label alignment="CENTER" text="M">
+                <styleClass>
+                    <String fx:value="brand-icon" />
+                </styleClass>
+            </Label>
+
+            <Label text="Movie Browser">
+                <styleClass>
+                    <String fx:value="brand-title" />
+                </styleClass>
+            </Label>
+
+            <Button fx:id="themeButton" text="Dark">
+                <styleClass>
+                    <String fx:value="pill-button" />
+                </styleClass>
+            </Button>
+
+            <Button fx:id="allButton" text="All">
+                <styleClass>
+                    <String fx:value="nav-button" />
+                    <String fx:value="active" />
+                </styleClass>
+            </Button>
+
+            <Button fx:id="watchButton" text="Watch Later">
+                <styleClass>
+                    <String fx:value="nav-button" />
+                </styleClass>
+            </Button>
+
+            <HBox HBox.hgrow="ALWAYS" />
+
+            <TextField fx:id="searchField" promptText="Search movie...">
+                <styleClass>
+                    <String fx:value="search-field" />
+                </styleClass>
+            </TextField>
+
+            <ComboBox fx:id="genreBox" promptText="All Genres">
+                <styleClass>
+                    <String fx:value="genre-box" />
+                </styleClass>
+            </ComboBox>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="16.0">
+            <styleClass>
+                <String fx:value="content-panel" />
+            </styleClass>
+            <padding>
+                <Insets bottom="22.0" left="34.0" right="22.0" top="28.0" />
+            </padding>
+
+            <Label text="Popular movies">
+                <styleClass>
+                    <String fx:value="section-title" />
+                </styleClass>
+            </Label>
+
+            <ScrollPane fitToWidth="true">
+                <styleClass>
+                    <String fx:value="catalog-scroll" />
+                </styleClass>
+                <content>
+                    <FlowPane fx:id="movieGrid" hgap="18.0" vgap="22.0">
+                        <styleClass>
+                            <String fx:value="movie-grid" />
+                        </styleClass>
+                    </FlowPane>
+                </content>
+            </ScrollPane>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_LEFT">
+            <styleClass>
+                <String fx:value="status-bar" />
+            </styleClass>
+            <Label fx:id="statusLabel" text="Ready">
+                <styleClass>
+                    <String fx:value="status-label" />
+                </styleClass>
+            </Label>
+        </HBox>
+    </bottom>
+</BorderPane>

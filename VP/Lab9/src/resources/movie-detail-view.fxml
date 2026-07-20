@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      alignment="TOP_LEFT"
+      spacing="22.0"
+      stylesheets="@styles.css">
+    <styleClass>
+        <String fx:value="detail-dialog" />
+    </styleClass>
+    <padding>
+        <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+    </padding>
+
+    <StackPane fx:id="posterSlot" prefHeight="320.0" prefWidth="220.0" />
+
+    <VBox alignment="TOP_LEFT" spacing="12.0" HBox.hgrow="ALWAYS">
+        <Label fx:id="detailTitle" wrapText="true">
+            <styleClass>
+                <String fx:value="detail-title" />
+            </styleClass>
+        </Label>
+
+        <Label fx:id="detailMeta">
+            <styleClass>
+                <String fx:value="detail-meta" />
+            </styleClass>
+        </Label>
+
+        <Label fx:id="detailGenres" wrapText="true">
+            <styleClass>
+                <String fx:value="chip-line" />
+            </styleClass>
+        </Label>
+
+        <Separator />
+
+        <Label fx:id="detailCast" wrapText="true">
+            <styleClass>
+                <String fx:value="detail-body" />
+            </styleClass>
+        </Label>
+
+        <Label fx:id="detailSummary" wrapText="true">
+            <styleClass>
+                <String fx:value="detail-body" />
+            </styleClass>
+        </Label>
+
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <Button fx:id="detailWatchLaterButton" text="Add to Watch Later" />
+            <Button fx:id="detailCloseButton" text="Close">
+                <styleClass>
+                    <String fx:value="small-button" />
+                </styleClass>
+            </Button>
+        </HBox>
+    </VBox>
+</HBox>

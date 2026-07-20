@@ -3,21 +3,21 @@ package application;
 import application.db.DBConnection;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Map;
 
 public class AuthApplication extends Application {
     private final UserDAO userDAO = new UserDAO();
@@ -55,69 +55,40 @@ public class AuthApplication extends Application {
     }
 
     private void showLoginScreen() {
-        TextField usernameField = new TextField();
-        usernameField.setPromptText("Username");
+        LoadedView view = loadView("/resources/login-view.fxml");
+        Map<String, Object> controls = view.controls();
 
-        PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("Password");
+        TextField usernameField = getControl(controls, "usernameField", TextField.class);
+        PasswordField passwordField = getControl(controls, "passwordField", PasswordField.class);
+        Button loginButton = getControl(controls, "loginButton", Button.class);
+        Button signupButton = getControl(controls, "signupButton", Button.class);
+        statusLabel = getControl(controls, "statusLabel", Label.class);
 
-        statusLabel = createStatusLabel();
-
-        Button loginButton = new Button("Login");
-        loginButton.setDefaultButton(true);
-        loginButton.getStyleClass().add("primary-button");
         loginButton.setOnAction(event -> login(usernameField.getText(), passwordField.getText()));
-
-        Button signupButton = new Button("Create Account");
-        signupButton.getStyleClass().add("secondary-button");
         signupButton.setOnAction(event -> showSignupScreen());
 
-        VBox card = createCard("Login", "Enter your account details");
-        card.getChildren().addAll(
-                createFormRow("Username", usernameField),
-                createFormRow("Password", passwordField),
-                createActions(loginButton, signupButton),
-                statusLabel
-        );
-
-        setScene(card);
+        setScene(view.root());
     }
 
     private void showSignupScreen() {
-        TextField usernameField = new TextField();
-        usernameField.setPromptText("Choose a username");
+        LoadedView view = loadView("/resources/signup-view.fxml");
+        Map<String, Object> controls = view.controls();
 
-        PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("Choose a password");
+        TextField usernameField = getControl(controls, "usernameField", TextField.class);
+        PasswordField passwordField = getControl(controls, "passwordField", PasswordField.class);
+        PasswordField confirmPasswordField = getControl(controls, "confirmPasswordField", PasswordField.class);
+        Button registerButton = getControl(controls, "registerButton", Button.class);
+        Button backButton = getControl(controls, "backButton", Button.class);
+        statusLabel = getControl(controls, "statusLabel", Label.class);
 
-        PasswordField confirmPasswordField = new PasswordField();
-        confirmPasswordField.setPromptText("Confirm password");
-
-        statusLabel = createStatusLabel();
-
-        Button registerButton = new Button("Sign Up");
-        registerButton.setDefaultButton(true);
-        registerButton.getStyleClass().add("primary-button");
         registerButton.setOnAction(event -> signup(
                 usernameField.getText(),
                 passwordField.getText(),
                 confirmPasswordField.getText()
         ));
-
-        Button backButton = new Button("Back to Login");
-        backButton.getStyleClass().add("secondary-button");
         backButton.setOnAction(event -> showLoginScreen());
 
-        VBox card = createCard("Create Account", "Register a new user");
-        card.getChildren().addAll(
-                createFormRow("Username", usernameField),
-                createFormRow("Password", passwordField),
-                createFormRow("Confirm", confirmPasswordField),
-                createActions(registerButton, backButton),
-                statusLabel
-        );
-
-        setScene(card);
+        setScene(view.root());
     }
 
     private void login(String username, String password) {
@@ -179,52 +150,24 @@ public class AuthApplication extends Application {
         }
     }
 
-    private VBox createCard(String title, String subtitle) {
-        Label titleLabel = new Label(title);
-        titleLabel.getStyleClass().add("title-label");
-
-        Label subtitleLabel = new Label(subtitle);
-        subtitleLabel.getStyleClass().add("subtitle-label");
-
-        VBox card = new VBox(16, titleLabel, subtitleLabel);
-        card.setAlignment(Pos.CENTER_LEFT);
-        card.getStyleClass().add("auth-card");
-        return card;
-    }
-
-    private HBox createFormRow(String label, TextField field) {
-        Label fieldLabel = new Label(label);
-        fieldLabel.getStyleClass().add("field-label");
-
-        field.setPrefWidth(300);
-
-        HBox row = new HBox(14, fieldLabel, field);
-        row.setAlignment(Pos.CENTER_LEFT);
-        return row;
-    }
-
-    private HBox createActions(Button primaryButton, Button secondaryButton) {
-        HBox actions = new HBox(12, secondaryButton, primaryButton);
-        actions.setAlignment(Pos.CENTER_RIGHT);
-        return actions;
-    }
-
-    private Label createStatusLabel() {
-        Label label = new Label();
-        label.getStyleClass().add("status-label");
-        label.setWrapText(true);
-        return label;
-    }
-
-    private void setScene(VBox card) {
-        BorderPane root = new BorderPane(card);
-        root.setPadding(new Insets(36));
-        root.getStyleClass().add("root-pane");
-        BorderPane.setAlignment(card, Pos.CENTER);
-
+    private void setScene(Parent root) {
         Scene scene = new Scene(root, 620, 460);
         scene.getStylesheets().add(AuthApplication.class.getResource("/resources/styles.css").toExternalForm());
         stage.setScene(scene);
+    }
+
+    private LoadedView loadView(String resourcePath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(AuthApplication.class.getResource(resourcePath));
+            Parent root = loader.load();
+            return new LoadedView(root, loader.getNamespace());
+        } catch (IOException exception) {
+            throw new IllegalStateException("Could not load " + resourcePath, exception);
+        }
+    }
+
+    private <T> T getControl(Map<String, Object> controls, String id, Class<T> type) {
+        return type.cast(controls.get(id));
     }
 
     private void showFatalScreen(String message) {
@@ -237,5 +180,8 @@ public class AuthApplication extends Application {
 
         Scene scene = new Scene(root, 620, 320);
         stage.setScene(scene);
+    }
+
+    private record LoadedView(Parent root, Map<String, Object> controls) {
     }
 }
