@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<indexing>
+ <object index="9" name="Table1" object_type="table"/>
+ <paragraph index="11" node_type="writer" parent_index="9">SUBARRAY SUM</paragraph>
+ <paragraph index="12" node_type="writer" parent_index="9">#include &lt;iostream&gt;</paragraph>
+ <paragraph index="13" node_type="writer" parent_index="9">#include &lt;vector&gt;</paragraph>
+ <paragraph index="14" node_type="writer" parent_index="9">#include &lt;climits&gt;</paragraph>
+ <paragraph index="15" node_type="writer" parent_index="9">#include &lt;algorithm&gt;</paragraph>
+ <paragraph index="16" node_type="writer" parent_index="9">using namespace std;</paragraph>
+ <paragraph index="18" node_type="writer" parent_index="9">// Finds the maximum sum of a subarray crossing the middle.</paragraph>
+ <paragraph index="19" node_type="writer" parent_index="9">long long maximumCrossingSum(const vector&lt;int&gt;&amp; nums, int left, int middle, int right)</paragraph>
+ <paragraph index="20" node_type="writer" parent_index="9">{</paragraph>
+ <paragraph index="21" node_type="writer" parent_index="9">    long long sum = 0;</paragraph>
+ <paragraph index="22" node_type="writer" parent_index="9">    long long maximumLeftSum = LLONG_MIN;</paragraph>
+ <paragraph index="24" node_type="writer" parent_index="9">    // Start from the middle and move left.</paragraph>
+ <paragraph index="25" node_type="writer" parent_index="9">    for (int i = middle; i &gt;= left; i--) {</paragraph>
+ <paragraph index="26" node_type="writer" parent_index="9">        sum += nums[i];</paragraph>
+ <paragraph index="27" node_type="writer" parent_index="9">        maximumLeftSum = max(maximumLeftSum, sum);</paragraph>
+ <paragraph index="28" node_type="writer" parent_index="9">    }</paragraph>
+ <paragraph index="30" node_type="writer" parent_index="9">    sum = 0;</paragraph>
+ <paragraph index="31" node_type="writer" parent_index="9">    long long maximumRightSum = LLONG_MIN;</paragraph>
+ <paragraph index="33" node_type="writer" parent_index="9">    // Start after the middle and move right.</paragraph>
+ <paragraph index="34" node_type="writer" parent_index="9">    for (int i = middle + 1; i &lt;= right; i++) {</paragraph>
+ <paragraph index="35" node_type="writer" parent_index="9">        sum += nums[i];</paragraph>
+ <paragraph index="36" node_type="writer" parent_index="9">        maximumRightSum = max(maximumRightSum, sum);</paragraph>
+ <paragraph index="37" node_type="writer" parent_index="9">    }</paragraph>
+ <paragraph index="39" node_type="writer" parent_index="9">    return maximumLeftSum + maximumRightSum;</paragraph>
+ <paragraph index="40" node_type="writer" parent_index="9">}</paragraph>
+ <paragraph index="42" node_type="writer" parent_index="9">long long maximumSubarraySum(const vector&lt;int&gt;&amp; nums, int left, int right)</paragraph>
+ <paragraph index="43" node_type="writer" parent_index="9">{</paragraph>
+ <paragraph index="44" node_type="writer" parent_index="9">    // Base case: only one element.</paragraph>
+ <paragraph index="45" node_type="writer" parent_index="9">    if (left == right)</paragraph>
+ <paragraph index="46" node_type="writer" parent_index="9">    {</paragraph>
+ <paragraph index="47" node_type="writer" parent_index="9">        return nums[left];</paragraph>
+ <paragraph index="48" node_type="writer" parent_index="9">    }</paragraph>
+ <paragraph index="50" node_type="writer" parent_index="9">    int middle = left + (right - left) / 2;</paragraph>
+ <paragraph index="52" node_type="writer" parent_index="9">    long long leftMaximum =</paragraph>
+ <paragraph index="53" node_type="writer" parent_index="9">        maximumSubarraySum(nums, left, middle);</paragraph>
+ <paragraph index="55" node_type="writer" parent_index="9">    long long rightMaximum =</paragraph>
+ <paragraph index="56" node_type="writer" parent_index="9">        maximumSubarraySum(nums, middle + 1, right);</paragraph>
+ <paragraph index="58" node_type="writer" parent_index="9">    long long crossingMaximum =</paragraph>
+ <paragraph index="59" node_type="writer" parent_index="9">        maximumCrossingSum(nums, left, middle, right);</paragraph>
+ <paragraph index="61" node_type="writer" parent_index="9">    return max({leftMaximum, rightMaximum, crossingMaximum});</paragraph>
+ <paragraph index="62" node_type="writer" parent_index="9">}</paragraph>
+ <paragraph index="64" node_type="writer" parent_index="9">int main() {</paragraph>
+ <paragraph index="65" node_type="writer" parent_index="9">    vector&lt;int&gt; nums = {</paragraph>
+ <paragraph index="66" node_type="writer" parent_index="9">        -2, 1, -3, 4, -1, 2, 1, -5, 4</paragraph>
+ <paragraph index="67" node_type="writer" parent_index="9">    };</paragraph>
+ <paragraph index="69" node_type="writer" parent_index="9">    if (nums.empty()) {</paragraph>
+ <paragraph index="70" node_type="writer" parent_index="9">        cout &lt;&lt; &quot;The array is empty.\n&quot;;</paragraph>
+ <paragraph index="71" node_type="writer" parent_index="9">        return 0;</paragraph>
+ <paragraph index="72" node_type="writer" parent_index="9">    }</paragraph>
+ <paragraph index="74" node_type="writer" parent_index="9">    long long answer =</paragraph>
+ <paragraph index="75" node_type="writer" parent_index="9">        maximumSubarraySum(nums, 0, nums.size() - 1);</paragraph>
+ <paragraph index="77" node_type="writer" parent_index="9">    cout &lt;&lt; &quot;Maximum subarray sum: &quot; &lt;&lt; answer &lt;&lt; '\n';</paragraph>
+ <paragraph index="79" node_type="writer" parent_index="9">    return 0;</paragraph>
+ <paragraph index="80" node_type="writer" parent_index="9">}</paragraph>
+ <paragraph index="83" node_type="writer" parent_index="9">NICE SUBSTRING</paragraph>
+ <paragraph index="84" node_type="writer" parent_index="9">#include  &lt;iostream&gt;
+#include &lt;unordered_set&gt; 
+#include  using namespace std;</paragraph>
+ <paragraph index="85" node_type="writer" parent_index="9">string longestNiceSubstring(const string&amp; text) { // A nice substring must contain at least two characters. if (text.size() &lt; 2) { return &quot;&quot;; }</paragraph>
+ <paragraph index="86" node_type="writer" parent_index="9">unordered_set&lt;char&gt; characters;
+
+for (char ch : text) {
+    characters.insert(ch);
+}
+
+for (int i = 0; i &lt; static_cast&lt;int&gt;(text.size()); i++)
+{
+    char current = text[i];
+
+    char oppositeCase;
+
+    if (islower(static_cast&lt;unsigned char&gt;(current)))
+    {
+        oppositeCase = static_cast&lt;char&gt;(toupper(static_cast&lt;unsigned char&gt;(current)));
+    }
+    else
+    {
+        oppositeCase = static_cast&lt;char&gt;(tolower(static_cast&lt;unsigned char&gt;(current)));
+    }
+
+    // The current character does not have
+    // its opposite case in this substring.
+    if (!characters.count(oppositeCase))
+    {
+        string leftAnswer =
+            longestNiceSubstring(text.substr(0, i));
+
+        string rightAnswer =
+            longestNiceSubstring(text.substr(i + 1));
+
+        // Return the left one when both lengths are equal.
+        if (leftAnswer.size() &gt;= rightAnswer.size())
+        {
+            return leftAnswer;
+        }
+
+        return rightAnswer;
+    }
+}
+
+// Every character has both uppercase and lowercase forms.
+return text;</paragraph>
+ <paragraph index="87" node_type="writer" parent_index="9">}</paragraph>
+ <paragraph index="88" node_type="writer" parent_index="9">int main() { string text = &quot;YazaAay&quot;;</paragraph>
+ <paragraph index="89" node_type="writer" parent_index="9">cout &lt;&lt; &quot;Longest nice substring: &quot;
+     &lt;&lt; longestNiceSubstring(text)
+     &lt;&lt; '\n';
+
+return 0;</paragraph>
+ <paragraph index="90" node_type="writer" parent_index="9">}</paragraph>
+ <paragraph index="91" node_type="writer" parent_index="9">____________________________________________________</paragraph>
+ <paragraph index="92" node_type="writer" parent_index="9">CONVEX HULL</paragraph>
+ <paragraph index="93" node_type="writer" parent_index="9">#include &lt;iostream&gt;</paragraph>
+ <paragraph index="94" node_type="writer" parent_index="9">#include &lt;vector&gt;</paragraph>
+ <paragraph index="95" node_type="writer" parent_index="9">#include &lt;set&gt;</paragraph>
+ <paragraph index="96" node_type="writer" parent_index="9">#include &lt;cstdlib&gt;</paragraph>
+ <paragraph index="97" node_type="writer" parent_index="9">using namespace std;</paragraph>
+ <paragraph index="99" node_type="writer" parent_index="9">struct Point {</paragraph>
+ <paragraph index="100" node_type="writer" parent_index="9">    long long x;</paragraph>
+ <paragraph index="101" node_type="writer" parent_index="9">    long long y;</paragraph>
+ <paragraph index="103" node_type="writer" parent_index="9">    bool operator&lt;(const Point&amp; other) const {</paragraph>
+ <paragraph index="104" node_type="writer" parent_index="9">        if (x != other.x) {</paragraph>
+ <paragraph index="105" node_type="writer" parent_index="9">            return x &lt; other.x;</paragraph>
+ <paragraph index="106" node_type="writer" parent_index="9">        }</paragraph>
+ <paragraph index="108" node_type="writer" parent_index="9">        return y &lt; other.y;</paragraph>
+ <paragraph index="109" node_type="writer" parent_index="9">    }</paragraph>
+ <paragraph index="110" node_type="writer" parent_index="9">};</paragraph>
+ <paragraph index="112" node_type="writer" parent_index="9">// Cross product of vectors AB and AP.</paragraph>
+ <paragraph index="113" node_type="writer" parent_index="9">long long crossProduct(</paragraph>
+ <paragraph index="114" node_type="writer" parent_index="9">    const Point&amp; a,</paragraph>
+ <paragraph index="115" node_type="writer" parent_index="9">    const Point&amp; b,</paragraph>
+ <paragraph index="116" node_type="writer" parent_index="9">    const Point&amp; p</paragraph>
+ <paragraph index="117" node_type="writer" parent_index="9">) {</paragraph>
+ <paragraph index="118" node_type="writer" parent_index="9">    return (b.x - a.x) * (p.y - a.y)</paragraph>
+ <paragraph index="119" node_type="writer" parent_index="9">         - (b.y - a.y) * (p.x - a.x);</paragraph>
+ <paragraph index="120" node_type="writer" parent_index="9">}</paragraph>
+ <paragraph index="125" node_type="writer" parent_index="9">// Returns the side of point P relative to line AB.</paragraph>
+ <paragraph index="126" node_type="writer" parent_index="9">int findSide(</paragraph>
+ <paragraph index="127" node_type="writer" parent_index="9">    const Point&amp; a,</paragraph>
+ <paragraph index="128" node_type="writer" parent_index="9">    const Point&amp; b,</paragraph>
+ <paragraph index="129" node_type="writer" parent_index="9">    const Point&amp; p</paragraph>
+ <paragraph index="130" node_type="writer" parent_index="9">) {</paragraph>
+ <paragraph index="131" node_type="writer" parent_index="9">    long long value = crossProduct(a, b, p);</paragraph>
+ <paragraph index="133" node_type="writer" parent_index="9">    if (value &gt; 0) {</paragraph>
+ <paragraph index="134" node_type="writer" parent_index="9">        return 1;</paragraph>
+ <paragraph index="135" node_type="writer" parent_index="9">    }</paragraph>
+ <paragraph index="137" node_type="writer" parent_index="9">    if (value &lt; 0) {</paragraph>
+ <paragraph index="138" node_type="writer" parent_index="9">        return -1;</paragraph>
+ <paragraph index="139" node_type="writer" parent_index="9">    }</paragraph>
+ <paragraph index="141" node_type="writer" parent_index="9">    return 0;</paragraph>
+ <paragraph index="142" node_type="writer" parent_index="9">}</paragraph>
+ <paragraph index="144" node_type="writer" parent_index="9">// Returns a value proportional to the distance</paragraph>
+ <paragraph index="145" node_type="writer" parent_index="9">// between point P and line AB.</paragraph>
+ <paragraph index="146" node_type="writer" parent_index="9">long long lineDistance(</paragraph>
+ <paragraph index="147" node_type="writer" parent_index="9">    const Point&amp; a,</paragraph>
+ <paragraph index="148" node_type="writer" parent_index="9">    const Point&amp; b,</paragraph>
+ <paragraph index="149" node_type="writer" parent_index="9">    const Point&amp; p</paragraph>
+ <paragraph index="150" node_type="writer" parent_index="9">) {</paragraph>
+ <paragraph index="151" node_type="writer" parent_index="9">    return llabs(crossProduct(a, b, p));</paragraph>
+ <paragraph index="152" node_type="writer" parent_index="9">}</paragraph>
+ <paragraph index="154" node_type="writer" parent_index="9">void buildHull(</paragraph>
+ <paragraph index="155" node_type="writer" parent_index="9">    const vector&lt;Point&gt;&amp; points,</paragraph>
+ <paragraph index="156" node_type="writer" parent_index="9">    const Point&amp; a,</paragraph>
+ <paragraph index="157" node_type="writer" parent_index="9">    const Point&amp; b,</paragraph>
+ <paragraph index="158" node_type="writer" parent_index="9">    int side,</paragraph>
+ <paragraph index="159" node_type="writer" parent_index="9">    set&lt;Point&gt;&amp; hull</paragraph>
+ <paragraph index="160" node_type="writer" parent_index="9">) {</paragraph>
+ <paragraph index="161" node_type="writer" parent_index="9">    int farthestIndex = -1;</paragraph>
+ <paragraph index="162" node_type="writer" parent_index="9">    long long maximumDistance = 0;</paragraph>
+ <paragraph index="164" node_type="writer" parent_index="9">    for (int i = 0; i &lt; static_cast&lt;int&gt;(points.size()); i++) {</paragraph>
+ <paragraph index="165" node_type="writer" parent_index="9">        long long distance = lineDistance(a, b, points[i]);</paragraph>
+ <paragraph index="167" node_type="writer" parent_index="9">        if (</paragraph>
+ <paragraph index="168" node_type="writer" parent_index="9">            findSide(a, b, points[i]) == side &amp;&amp;</paragraph>
+ <paragraph index="169" node_type="writer" parent_index="9">            distance &gt; maximumDistance</paragraph>
+ <paragraph index="170" node_type="writer" parent_index="9">        ) {</paragraph>
+ <paragraph index="171" node_type="writer" parent_index="9">            farthestIndex = i;</paragraph>
+ <paragraph index="172" node_type="writer" parent_index="9">            maximumDistance = distance;</paragraph>
+ <paragraph index="173" node_type="writer" parent_index="9">        }</paragraph>
+ <paragraph index="174" node_type="writer" parent_index="9">    }</paragraph>
+ <paragraph index="176" node_type="writer" parent_index="9">    // No point exists on the required side.</paragraph>
+ <paragraph index="177" node_type="writer" parent_index="9">    // A and B are hull points.</paragraph>
+ <paragraph index="178" node_type="writer" parent_index="9">    if (farthestIndex == -1) {</paragraph>
+ <paragraph index="179" node_type="writer" parent_index="9">        hull.insert(a);</paragraph>
+ <paragraph index="180" node_type="writer" parent_index="9">        hull.insert(b);</paragraph>
+ <paragraph index="181" node_type="writer" parent_index="9">        return;</paragraph>
+ <paragraph index="182" node_type="writer" parent_index="9">    }</paragraph>
+ <paragraph index="184" node_type="writer" parent_index="9">    Point farthestPoint = points[farthestIndex];</paragraph>
+ <paragraph index="186" node_type="writer" parent_index="9">    // Recursively process the two new regions.</paragraph>
+ <paragraph index="187" node_type="writer" parent_index="9">    buildHull(</paragraph>
+ <paragraph index="188" node_type="writer" parent_index="9">        points,</paragraph>
+ <paragraph index="189" node_type="writer" parent_index="9">        farthestPoint,</paragraph>
+ <paragraph index="190" node_type="writer" parent_index="9">        a,</paragraph>
+ <paragraph index="191" node_type="writer" parent_index="9">        -findSide(farthestPoint, a, b),</paragraph>
+ <paragraph index="192" node_type="writer" parent_index="9">        hull</paragraph>
+ <paragraph index="193" node_type="writer" parent_index="9">    );</paragraph>
+ <paragraph index="195" node_type="writer" parent_index="9">    buildHull(</paragraph>
+ <paragraph index="196" node_type="writer" parent_index="9">        points,</paragraph>
+ <paragraph index="197" node_type="writer" parent_index="9">        farthestPoint,</paragraph>
+ <paragraph index="198" node_type="writer" parent_index="9">        b,</paragraph>
+ <paragraph index="199" node_type="writer" parent_index="9">        -findSide(farthestPoint, b, a),</paragraph>
+ <paragraph index="200" node_type="writer" parent_index="9">        hull</paragraph>
+ <paragraph index="201" node_type="writer" parent_index="9">    );</paragraph>
+ <paragraph index="202" node_type="writer" parent_index="9">}</paragraph>
+ <paragraph index="204" node_type="writer" parent_index="9">set&lt;Point&gt; quickHull(const vector&lt;Point&gt;&amp; points) {</paragraph>
+ <paragraph index="205" node_type="writer" parent_index="9">    set&lt;Point&gt; hull;</paragraph>
+ <paragraph index="207" node_type="writer" parent_index="9">    if (points.size() &lt; 3) {</paragraph>
+ <paragraph index="208" node_type="writer" parent_index="9">        for (const Point&amp; point : points) {</paragraph>
+ <paragraph index="209" node_type="writer" parent_index="9">            hull.insert(point);</paragraph>
+ <paragraph index="210" node_type="writer" parent_index="9">        }</paragraph>
+ <paragraph index="212" node_type="writer" parent_index="9">        return hull;</paragraph>
+ <paragraph index="213" node_type="writer" parent_index="9">    }</paragraph>
+ <paragraph index="215" node_type="writer" parent_index="9">    int minimumXIndex = 0;</paragraph>
+ <paragraph index="216" node_type="writer" parent_index="9">    int maximumXIndex = 0;</paragraph>
+ <paragraph index="218" node_type="writer" parent_index="9">    for (int i = 1; i &lt; static_cast&lt;int&gt;(points.size()); i++) {</paragraph>
+ <paragraph index="219" node_type="writer" parent_index="9">        if (points[i].x &lt; points[minimumXIndex].x) {</paragraph>
+ <paragraph index="220" node_type="writer" parent_index="9">            minimumXIndex = i;</paragraph>
+ <paragraph index="221" node_type="writer" parent_index="9">        }</paragraph>
+ <paragraph index="225" node_type="writer" parent_index="9">        if (points[i].x &gt; points[maximumXIndex].x) {</paragraph>
+ <paragraph index="226" node_type="writer" parent_index="9">            maximumXIndex = i;</paragraph>
+ <paragraph index="227" node_type="writer" parent_index="9">        }</paragraph>
+ <paragraph index="228" node_type="writer" parent_index="9">    }</paragraph>
+ <paragraph index="230" node_type="writer" parent_index="9">    Point leftmost = points[minimumXIndex];</paragraph>
+ <paragraph index="231" node_type="writer" parent_index="9">    Point rightmost = points[maximumXIndex];</paragraph>
+ <paragraph index="233" node_type="writer" parent_index="9">    // Find hull points above line leftmost-rightmost.</paragraph>
+ <paragraph index="234" node_type="writer" parent_index="9">    buildHull(</paragraph>
+ <paragraph index="235" node_type="writer" parent_index="9">        points,</paragraph>
+ <paragraph index="236" node_type="writer" parent_index="9">        leftmost,</paragraph>
+ <paragraph index="237" node_type="writer" parent_index="9">        rightmost,</paragraph>
+ <paragraph index="238" node_type="writer" parent_index="9">        1,</paragraph>
+ <paragraph index="239" node_type="writer" parent_index="9">        hull</paragraph>
+ <paragraph index="240" node_type="writer" parent_index="9">    );</paragraph>
+ <paragraph index="242" node_type="writer" parent_index="9">    // Find hull points below line leftmost-rightmost.</paragraph>
+ <paragraph index="243" node_type="writer" parent_index="9">    buildHull(</paragraph>
+ <paragraph index="244" node_type="writer" parent_index="9">        points,</paragraph>
+ <paragraph index="245" node_type="writer" parent_index="9">        leftmost,</paragraph>
+ <paragraph index="246" node_type="writer" parent_index="9">        rightmost,</paragraph>
+ <paragraph index="247" node_type="writer" parent_index="9">        -1,</paragraph>
+ <paragraph index="248" node_type="writer" parent_index="9">        hull</paragraph>
+ <paragraph index="249" node_type="writer" parent_index="9">    );</paragraph>
+ <paragraph index="251" node_type="writer" parent_index="9">    return hull;</paragraph>
+ <paragraph index="252" node_type="writer" parent_index="9">}</paragraph>
+ <paragraph index="254" node_type="writer" parent_index="9">int main() {</paragraph>
+ <paragraph index="255" node_type="writer" parent_index="9">    vector&lt;Point&gt; points = {</paragraph>
+ <paragraph index="256" node_type="writer" parent_index="9">        {0, 3},</paragraph>
+ <paragraph index="257" node_type="writer" parent_index="9">        {2, 2},</paragraph>
+ <paragraph index="258" node_type="writer" parent_index="9">        {1, 1},</paragraph>
+ <paragraph index="259" node_type="writer" parent_index="9">        {2, 1},</paragraph>
+ <paragraph index="260" node_type="writer" parent_index="9">        {3, 0},</paragraph>
+ <paragraph index="261" node_type="writer" parent_index="9">        {0, 0},</paragraph>
+ <paragraph index="262" node_type="writer" parent_index="9">        {3, 3}</paragraph>
+ <paragraph index="263" node_type="writer" parent_index="9">    };</paragraph>
+ <paragraph index="265" node_type="writer" parent_index="9">    set&lt;Point&gt; hull = quickHull(points);</paragraph>
+ <paragraph index="267" node_type="writer" parent_index="9">    cout &lt;&lt; &quot;Points on the convex hull:\n&quot;;</paragraph>
+ <paragraph index="269" node_type="writer" parent_index="9">    for (const Point&amp; point : hull) {</paragraph>
+ <paragraph index="270" node_type="writer" parent_index="9">        cout &lt;&lt; &quot;(&quot; &lt;&lt; point.x</paragraph>
+ <paragraph index="271" node_type="writer" parent_index="9">             &lt;&lt; &quot;, &quot; &lt;&lt; point.y &lt;&lt; &quot;)\n&quot;;</paragraph>
+ <paragraph index="272" node_type="writer" parent_index="9">    }</paragraph>
+ <paragraph index="274" node_type="writer" parent_index="9">    return 0;</paragraph>
+ <paragraph index="275" node_type="writer" parent_index="9">}</paragraph>
+</indexing>

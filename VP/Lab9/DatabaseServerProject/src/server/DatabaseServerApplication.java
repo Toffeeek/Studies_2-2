@@ -1,5 +1,7 @@
 package server;
 
+import server.db.DBConnection;
+
 import java.sql.SQLException;
 
 public class DatabaseServerApplication {
@@ -8,6 +10,7 @@ public class DatabaseServerApplication {
 
         try {
             System.out.println("Starting Movie Scout database server setup...");
+            System.out.println("Connecting to MySQL: " + DBConnection.getSettingsDescription());
             movieSeedDAO.initializeDatabase();
             int movieCount = movieSeedDAO.countMovies();
             System.out.println("Database is ready.");
@@ -16,6 +19,9 @@ public class DatabaseServerApplication {
         } catch (SQLException exception) {
             System.err.println("Database setup failed.");
             System.err.println(exception.getMessage());
+            System.err.println();
+            System.err.println("Current target: " + DBConnection.getSettingsDescription());
+            System.err.println("Make sure MariaDB is running on 127.0.0.1:3306.");
             System.exit(1);
         }
     }

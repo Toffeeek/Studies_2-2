@@ -1,0 +1,50 @@
+[
+{
+  "directory": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug",
+  "command": "/usr/bin/c++ -I/home/tawfiq/Studies/2-2/Algorithm/DP/. -g -std=gnu++14 -fdiagnostics-color=always -o CMakeFiles/DP.dir/fibonacci.cpp.o -c /home/tawfiq/Studies/2-2/Algorithm/DP/fibonacci.cpp",
+  "file": "/home/tawfiq/Studies/2-2/Algorithm/DP/fibonacci.cpp",
+  "output": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug/CMakeFiles/DP.dir/fibonacci.cpp.o"
+},
+{
+  "directory": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug",
+  "command": "/usr/bin/c++ -I/home/tawfiq/Studies/2-2/Algorithm/DP/. -g -std=gnu++14 -fdiagnostics-color=always -o CMakeFiles/DP.dir/friendsPairing.cpp.o -c /home/tawfiq/Studies/2-2/Algorithm/DP/friendsPairing.cpp",
+  "file": "/home/tawfiq/Studies/2-2/Algorithm/DP/friendsPairing.cpp",
+  "output": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug/CMakeFiles/DP.dir/friendsPairing.cpp.o"
+},
+{
+  "directory": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug",
+  "command": "/usr/bin/c++ -I/home/tawfiq/Studies/2-2/Algorithm/DP/. -g -std=gnu++14 -fdiagnostics-color=always -o CMakeFiles/DP.dir/tiling.cpp.o -c /home/tawfiq/Studies/2-2/Algorithm/DP/tiling.cpp",
+  "file": "/home/tawfiq/Studies/2-2/Algorithm/DP/tiling.cpp",
+  "output": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug/CMakeFiles/DP.dir/tiling.cpp.o"
+},
+{
+  "directory": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug",
+  "command": "/usr/bin/c++ -I/home/tawfiq/Studies/2-2/Algorithm/DP/. -g -std=gnu++14 -fdiagnostics-color=always -o CMakeFiles/DP.dir/coinExchange_unlimited-coins.cpp.o -c /home/tawfiq/Studies/2-2/Algorithm/DP/coinExchange_unlimited-coins.cpp",
+  "file": "/home/tawfiq/Studies/2-2/Algorithm/DP/coinExchange_unlimited-coins.cpp",
+  "output": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug/CMakeFiles/DP.dir/coinExchange_unlimited-coins.cpp.o"
+},
+{
+  "directory": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug",
+  "command": "/usr/bin/c++ -I/home/tawfiq/Studies/2-2/Algorithm/DP/. -g -std=gnu++14 -fdiagnostics-color=always -o CMakeFiles/DP.dir/coinExchange_limited-coins.cpp.o -c /home/tawfiq/Studies/2-2/Algorithm/DP/coinExchange_limited-coins.cpp",
+  "file": "/home/tawfiq/Studies/2-2/Algorithm/DP/coinExchange_limited-coins.cpp",
+  "output": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug/CMakeFiles/DP.dir/coinExchange_limited-coins.cpp.o"
+},
+{
+  "directory": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug",
+  "command": "/usr/bin/c++ -I/home/tawfiq/Studies/2-2/Algorithm/DP/. -g -std=gnu++14 -fdiagnostics-color=always -o CMakeFiles/DP.dir/coinExchange_k-coins.cpp.o -c /home/tawfiq/Studies/2-2/Algorithm/DP/coinExchange_k-coins.cpp",
+  "file": "/home/tawfiq/Studies/2-2/Algorithm/DP/coinExchange_k-coins.cpp",
+  "output": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug/CMakeFiles/DP.dir/coinExchange_k-coins.cpp.o"
+},
+{
+  "directory": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug",
+  "command": "/usr/bin/c++ -I/home/tawfiq/Studies/2-2/Algorithm/DP/. -g -std=gnu++14 -fdiagnostics-color=always -o CMakeFiles/DP.dir/coinExchange_min-coins.cpp.o -c /home/tawfiq/Studies/2-2/Algorithm/DP/coinExchange_min-coins.cpp",
+  "file": "/home/tawfiq/Studies/2-2/Algorithm/DP/coinExchange_min-coins.cpp",
+  "output": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug/CMakeFiles/DP.dir/coinExchange_min-coins.cpp.o"
+},
+{
+  "directory": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug",
+  "command": "/usr/bin/c++ -I/home/tawfiq/Studies/2-2/Algorithm/DP/. -g -std=gnu++14 -fdiagnostics-color=always -o CMakeFiles/DP.dir/knapsack.cpp.o -c /home/tawfiq/Studies/2-2/Algorithm/DP/knapsack.cpp",
+  "file": "/home/tawfiq/Studies/2-2/Algorithm/DP/knapsack.cpp",
+  "output": "/home/tawfiq/Studies/2-2/Algorithm/DP/cmake-build-debug/CMakeFiles/DP.dir/knapsack.cpp.o"
+}
+]

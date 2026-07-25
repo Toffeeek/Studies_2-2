@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Scout Lab Report</title>
+    <style>
+        body {
+            font-family: "Liberation Serif", "Times New Roman", serif;
+            font-size: 12pt;
+            line-height: 1.35;
+            color: #111827;
+        }
+        h1, h2, h3 {
+            font-family: "Liberation Sans", Arial, sans-serif;
+            color: #111827;
+        }
+        h1 {
+            text-align: center;
+            font-size: 24pt;
+            margin-top: 36pt;
+        }
+        h2 {
+            font-size: 16pt;
+            margin-top: 24pt;
+            border-bottom: 1px solid #9ca3af;
+            padding-bottom: 4pt;
+        }
+        h3 {
+            font-size: 13pt;
+            margin-top: 16pt;
+        }
+        .center {
+            text-align: center;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        code, pre {
+            font-family: "Liberation Mono", Consolas, monospace;
+            font-size: 9.5pt;
+        }
+        pre {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            padding: 8pt;
+            white-space: pre-wrap;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 8pt 0 12pt;
+        }
+        th, td {
+            border: 1px solid #9ca3af;
+            padding: 5pt;
+            vertical-align: top;
+        }
+        th {
+            background: #e5e7eb;
+            font-weight: bold;
+        }
+        figure {
+            margin: 12pt 0;
+            text-align: center;
+        }
+        figcaption {
+            font-size: 10pt;
+            color: #374151;
+            margin-top: 4pt;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .schema-box {
+            border: 1px solid #6b7280;
+            padding: 8pt;
+            margin: 8pt 0;
+            background: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+<h1>Movie Scout Lab Report</h1>
+<p class="center"><strong>Project:</strong> Movie Browser with JavaFX, DAO Classes, and MariaDB</p>
+<p class="center"><strong>Database:</strong> <code>vpl_lab</code></p>
+<p class="center"><strong>Module:</strong> Lab9 / DatabaseServerProject</p>
+
+<h2>1. Problem Statement</h2>
+<p>
+    The lab task was to prepare a movie browsing application and explain the database schema,
+    DAO classes, Java classes, database queries, dynamically added UI components, FXML files,
+    application screenshots, and database schema evidence.
+</p>
+<figure>
+    <img src="report_assets/problem_statement.png" alt="Problem statement screenshot">
+    <figcaption>Figure 1: Given lab report requirements.</figcaption>
+</figure>
+
+<h2>2. Project Overview</h2>
+<p>
+    Movie Scout is a JavaFX desktop application that displays a collection of movies from a
+    MariaDB database. The application supports browsing all movies, searching by movie title,
+    filtering by genre, viewing movie details, and adding or removing movies from a Watch Later list.
+</p>
+<p>
+    The project is divided into two main parts:
+</p>
+<table>
+    <tr><th>Part</th><th>Description</th></tr>
+    <tr>
+        <td><code>DatabaseServerProject</code></td>
+        <td>Initializes the <code>vpl_lab</code> database, creates tables, and seeds the movie records.</td>
+    </tr>
+    <tr>
+        <td><code>src/application</code></td>
+        <td>JavaFX client application. It loads movies through DAO classes and builds the movie browsing UI.</td>
+    </tr>
+</table>
+
+<h2>3. Database Schema</h2>
+<p>
+    The database contains two tables: <code>movies</code> and <code>watch_later</code>.
+    The <code>movies</code> table stores all movie information. The <code>watch_later</code>
+    table stores the selected movie IDs and references the <code>movies</code> table.
+</p>
+
+<div class="schema-box">
+    <p><strong>Relationship:</strong></p>
+    <p><code>movies.id</code> 1 --- 0..1 <code>watch_later.movie_id</code></p>
+    <p>
+        Each watch-later row belongs to exactly one movie. The foreign key uses
+        <code>ON DELETE CASCADE</code>, so if a movie is deleted, its watch-later record is also deleted.
+    </p>
+</div>
+
+<h3>3.1 Table: movies</h3>
+<table>
+    <tr><th>Column</th><th>Type</th><th>Constraint</th><th>Purpose</th></tr>
+    <tr><td><code>id</code></td><td><code>INT</code></td><td>Primary key, auto increment</td><td>Unique movie identifier.</td></tr>
+    <tr><td><code>title</code></td><td><code>VARCHAR(160)</code></td><td>Not null, unique</td><td>Movie title.</td></tr>
+    <tr><td><code>genres</code></td><td><code>VARCHAR(180)</code></td><td>Not null</td><td>Comma-separated movie genres.</td></tr>
+    <tr><td><code>cast_members</code></td><td><code>VARCHAR(260)</code></td><td>Not null</td><td>Main cast list.</td></tr>
+    <tr><td><code>duration_minutes</code></td><td><code>INT</code></td><td>Not null</td><td>Runtime in minutes.</td></tr>
+    <tr><td><code>imdb_rating</code></td><td><code>DECIMAL(3,1)</code></td><td>Not null</td><td>IMDb rating shown in movie cards and details.</td></tr>
+    <tr><td><code>summary</code></td><td><code>TEXT</code></td><td>Not null</td><td>Movie description.</td></tr>
+    <tr><td><code>poster_url</code></td><td><code>VARCHAR(500)</code></td><td>Not null</td><td>Poster image URL loaded by JavaFX.</td></tr>
+</table>
+
+<h3>3.2 Table: watch_later</h3>
+<table>
+    <tr><th>Column</th><th>Type</th><th>Constraint</th><th>Purpose</th></tr>
+    <tr><td><code>movie_id</code></td><td><code>INT</code></td><td>Primary key, foreign key to <code>movies(id)</code></td><td>Selected movie.</td></tr>
+    <tr><td><code>created_at</code></td><td><code>TIMESTAMP</code></td><td>Default current timestamp</td><td>Time when the movie was added to Watch Later.</td></tr>
+</table>
+
+<h3>3.3 Schema Creation Code</h3>
+<pre><code>private void createTables() throws SQLException {
+    String moviesSql = """
+            CREATE TABLE IF NOT EXISTS movies (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                title VARCHAR(160) NOT NULL UNIQUE,
+                genres VARCHAR(180) NOT NULL,
+                cast_members VARCHAR(260) NOT NULL,
+                duration_minutes INT NOT NULL,
+                imdb_rating DECIMAL(3,1) NOT NULL,
+                summary TEXT NOT NULL,
+                poster_url VARCHAR(500) NOT NULL
+            )
+            """;
+
+    String watchLaterSql = """
+            CREATE TABLE IF NOT EXISTS watch_later (
+                movie_id INT PRIMARY KEY,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                CONSTRAINT fk_watch_later_movie
+                    FOREIGN KEY (movie_id) REFERENCES movies(id)
+                    ON DELETE CASCADE
+            )
+            """;
+}</code></pre>
+<p>
+    This code is in <code>DatabaseServerProject/src/server/MovieSeedDAO.java</code>.
+    It creates the two required tables if they do not already exist.
+</p>
+
+<h2>4. Database Evidence</h2>
+<figure>
+    <img src="report_assets/db_tables.png" alt="Database tables screenshot">
+    <figcaption>Figure 2: MariaDB output showing the <code>movies</code> and <code>watch_later</code> tables.</figcaption>
+</figure>
+<figure>
+    <img src="report_assets/db_movies.png" alt="Movies table rows screenshot">
+    <figcaption>Figure 3: Movie records stored in the <code>movies</code> table.</figcaption>
+</figure>
+<figure>
+    <img src="report_assets/db_watch_later.png" alt="Watch later table rows screenshot">
+    <figcaption>Figure 4: Records stored in the <code>watch_later</code> table.</figcaption>
+</figure>
+
+<h2>5. DAO Classes and Queries</h2>
+<h3>5.1 DBConnection</h3>
+<p>
+    <code>DBConnection</code> centralizes JDBC connection creation. Both the database server module
+    and the JavaFX client use JDBC to connect to the local MariaDB server. The default database is
+    <code>vpl_lab</code>.
+</p>
+<pre><code>public static Connection getConnection() throws SQLException {
+    return DriverManager.getConnection(URL, USER, PASSWORD);
+}</code></pre>
+
+<h3>5.2 MovieSeedDAO</h3>
+<p>
+    <code>MovieSeedDAO</code> prepares the database for the client application. It creates the database,
+    creates the required tables, inserts seed data, and counts the movies after setup.
+</p>
+<pre><code>public void initializeDatabase() throws SQLException {
+    createDatabase();
+    createTables();
+    seedMovies();
+}</code></pre>
+<p>
+    The seed query uses <code>INSERT IGNORE</code>. This prevents duplicate records because
+    <code>title</code> is unique in the <code>movies</code> table.
+</p>
+<pre><code>String sql = """
+        INSERT IGNORE INTO movies
+        (title, genres, cast_members, duration_minutes, imdb_rating, summary, poster_url)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """;</code></pre>
+
+<h3>5.3 MovieDAO</h3>
+<p>
+    <code>MovieDAO</code> is used by the JavaFX client to read movie data from the database.
+    It contains methods for counting movies, searching movies, loading genres, and finding a movie by ID.
+</p>
+<p><strong>Counting movies:</strong></p>
+<pre><code>String sql = "SELECT COUNT(*) AS movie_count FROM movies";</code></pre>
+<p>
+    This query checks whether the database is ready and also provides a count of available movies.
+</p>
+
+<p><strong>Searching and filtering movies:</strong></p>
+<pre><code>SELECT m.id, m.title, m.genres, m.cast_members, m.duration_minutes,
+       m.imdb_rating, m.summary, m.poster_url,
+       CASE WHEN wl.movie_id IS NULL THEN FALSE ELSE TRUE END AS watch_later
+FROM movies m
+LEFT JOIN watch_later wl ON wl.movie_id = m.id
+WHERE LOWER(m.title) LIKE LOWER(?)
+ORDER BY m.imdb_rating DESC, m.title</code></pre>
+<p>
+    The query reads movie data and performs a left join with the <code>watch_later</code> table.
+    The join allows the application to know whether each movie has already been added to Watch Later.
+    The <code>LIKE</code> condition is used for title search. If a genre is selected, the DAO adds
+    another <code>LOWER(m.genres) LIKE LOWER(?)</code> condition. If Watch Later mode is selected,
+    the DAO adds <code>wl.movie_id IS NOT NULL</code>.
+</p>
+
+<p><strong>Loading genres:</strong></p>
+<pre><code>String sql = "SELECT genres FROM movies ORDER BY genres";</code></pre>
+<p>
+    The DAO reads genre strings from all movies, splits them by comma in Java, removes duplicates,
+    and sorts them alphabetically before filling the genre combo box.
+</p>
+
+<p><strong>Finding a movie by ID:</strong></p>
+<pre><code>WHERE m.id = ?</code></pre>
+<p>
+    This prepared statement is used when a movie card is clicked. It loads the selected movie's
+    full detail record and watch-later status.
+</p>
+
+<h3>5.4 WatchLaterDAO</h3>
+<p>
+    <code>WatchLaterDAO</code> manages insert and delete operations for the Watch Later list.
+</p>
+<pre><code>String sql = "INSERT IGNORE INTO watch_later (movie_id) VALUES (?)";</code></pre>
+<p>
+    This query adds a movie to Watch Later. <code>INSERT IGNORE</code> avoids duplicate insert errors
+    because <code>movie_id</code> is the primary key.
+</p>
+<pre><code>String sql = "DELETE FROM watch_later WHERE movie_id = ?";</code></pre>
+<p>
+    This query removes a movie from Watch Later.
+</p>
+
+<h2>6. Java Classes</h2>
+<table>
+    <tr><th>Class</th><th>Responsibility</th></tr>
+    <tr><td><code>Main</code></td><td>Launches the JavaFX application.</td></tr>
+    <tr><td><code>MovieScoutApplication</code></td><td>Main JavaFX application class. Loads FXML, wires events, creates movie cards dynamically, opens detail dialogs, and handles errors.</td></tr>
+    <tr><td><code>Movie</code></td><td>Model class that stores movie data such as title, genres, cast, duration, rating, summary, poster URL, and watch-later status.</td></tr>
+    <tr><td><code>MovieDAO</code></td><td>Reads movie data, performs search/filter queries, and maps result sets to <code>Movie</code> objects.</td></tr>
+    <tr><td><code>WatchLaterDAO</code></td><td>Adds and removes movies in the <code>watch_later</code> table.</td></tr>
+    <tr><td><code>DatabaseServerApplication</code></td><td>Runs the database setup process before the client is used.</td></tr>
+    <tr><td><code>MovieSeedDAO</code></td><td>Creates schema and inserts initial movie data.</td></tr>
+</table>
+
+<h2>7. Dynamic UI Components</h2>
+<p>
+    The FXML file defines the main layout containers, search field, genre combo box, status label,
+    and empty movie grid. The movie cards themselves are generated dynamically in Java after records
+    are loaded from the database.
+</p>
+<pre><code>movieGrid.getChildren().setAll(
+        movies.stream().map(this::createMovieCard).toList()
+);</code></pre>
+<p>
+    Each movie card is created by <code>createMovieCard(Movie movie)</code>. The method creates a poster,
+    title label, year label, genre chips, rating row, and click handler.
+</p>
+<pre><code>VBox card = new VBox(10, posterPane, body, ratingRow);
+card.getStyleClass().add("movie-card");
+card.setOnMouseClicked(event -> showDetails(movie.getId()));</code></pre>
+<p>
+    The genre chips are also dynamic because the code splits each movie's genre string and creates
+    a new <code>Label</code> for each genre.
+</p>
+<pre><code>for (String genre : movie.getGenres().split(",")) {
+    Label chip = new Label(genre.trim());
+    chip.getStyleClass().add("genre-chip");
+    chips.getChildren().add(chip);
+}</code></pre>
+<p>
+    The detail view is loaded from <code>movie-detail-view.fxml</code>, but its poster, title, metadata,
+    genres, cast, summary, and Watch Later button text are filled dynamically from the selected movie.
+</p>
+
+<h2>8. FXML Files</h2>
+<h3>8.1 movie-browser-view.fxml</h3>
+<p>
+    This file defines the main browser screen. It contains the top bar, theme button, navigation buttons,
+    search field, genre combo box, movie grid, and status bar.
+</p>
+<pre><code>&lt;TextField fx:id="searchField" promptText="Search movie..." /&gt;
+&lt;ComboBox fx:id="genreBox" promptText="All Genres" /&gt;
+&lt;FlowPane fx:id="movieGrid" hgap="18.0" vgap="22.0" /&gt;
+&lt;Label fx:id="statusLabel" text="Ready" /&gt;</code></pre>
+
+<h3>8.2 movie-detail-view.fxml</h3>
+<p>
+    This file defines the movie detail dialog layout. Java fills the controls after a movie card is clicked.
+</p>
+<pre><code>&lt;StackPane fx:id="posterSlot" prefHeight="320.0" prefWidth="220.0" /&gt;
+&lt;Label fx:id="detailTitle" wrapText="true" /&gt;
+&lt;Label fx:id="detailMeta" /&gt;
+&lt;Label fx:id="detailGenres" wrapText="true" /&gt;
+&lt;Button fx:id="detailWatchLaterButton" text="Add to Watch Later" /&gt;</code></pre>
+
+<h2>9. Application Screenshots</h2>
+<figure>
+    <img src="report_assets/home_screen.png" alt="Home screen">
+    <figcaption>Figure 5: Home screen showing all popular movies loaded from the database.</figcaption>
+</figure>
+<figure>
+    <img src="report_assets/search_feature.png" alt="Search feature">
+    <figcaption>Figure 6: Search feature filtering movies by title text.</figcaption>
+</figure>
+<figure>
+    <img src="report_assets/movie_details.png" alt="Movie details">
+    <figcaption>Figure 7: Movie detail dialog with poster, metadata, cast, summary, and Watch Later button.</figcaption>
+</figure>
+<figure>
+    <img src="report_assets/watch_later.png" alt="Watch later">
+    <figcaption>Figure 8: Watch Later view showing movies saved in the <code>watch_later</code> table.</figcaption>
+</figure>
+
+<h2>10. Conclusion</h2>
+<p>
+    The project satisfies the movie browsing task by combining a JavaFX user interface with a MariaDB
+    database backend. The database server module initializes the schema and seed data, while the client
+    uses DAO classes to run prepared SQL queries. The application dynamically generates movie cards,
+    supports live search and filtering, displays detailed movie information, and persists Watch Later
+    selections in the database.
+</p>
+</body>
+</html>

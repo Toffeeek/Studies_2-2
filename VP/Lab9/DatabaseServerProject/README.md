@@ -1,6 +1,8 @@
 # Movie Scout Database Server
 
-This separate Java project initializes the `vpl_lab` database for the JavaFX client.
+This separate Java project creates and initializes the `vpl_lab` database for the JavaFX client.
+
+It connects to MariaDB at `127.0.0.1:3306` with user `root` and password `mysql`.
 
 Run from the Lab9 root:
 
