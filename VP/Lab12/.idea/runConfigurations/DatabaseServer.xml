@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DatabaseServer" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="server.DatabaseServerApplication" />
+    <module name="DatabaseServerProject" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

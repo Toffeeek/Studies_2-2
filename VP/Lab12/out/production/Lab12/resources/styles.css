@@ -1,0 +1,203 @@
+.app-root {
+    -fx-font-family: "Inter", "Segoe UI", "Arial", sans-serif;
+}
+
+.app-root.dark {
+    -fx-background-color: #101216;
+}
+
+.app-root.light {
+    -fx-background-color: #f5f7fb;
+}
+
+.top-bar {
+    -fx-padding: 14 22;
+    -fx-spacing: 12;
+}
+
+.dark .top-bar {
+    -fx-background-color: #08090c;
+    -fx-border-color: #242a33;
+    -fx-border-width: 0 0 1 0;
+}
+
+.light .top-bar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dce3ed;
+    -fx-border-width: 0 0 1 0;
+}
+
+.brand-title {
+    -fx-font-size: 18;
+    -fx-font-weight: 900;
+}
+
+.dark .brand-title {
+    -fx-text-fill: #f7f9fc;
+}
+
+.light .brand-title {
+    -fx-text-fill: #111827;
+}
+
+.story-row {
+    -fx-padding: 18 24 16 24;
+}
+
+.dark .story-row {
+    -fx-background-color: #141820;
+    -fx-border-color: #242a33;
+    -fx-border-width: 0 0 1 0;
+}
+
+.light .story-row {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dce3ed;
+    -fx-border-width: 0 0 1 0;
+}
+
+.story-item {
+    -fx-cursor: hand;
+}
+
+.avatar-ring-unseen,
+.avatar-ring-seen {
+    -fx-min-width: 74;
+    -fx-min-height: 74;
+    -fx-max-width: 74;
+    -fx-max-height: 74;
+    -fx-padding: 5;
+    -fx-background-radius: 37;
+}
+
+.avatar-ring-unseen {
+    -fx-background-color: linear-gradient(to bottom right, #f43f5e, #f59e0b);
+}
+
+.avatar-ring-seen {
+    -fx-background-color: #687385;
+}
+
+.story-name {
+    -fx-font-size: 12;
+    -fx-font-weight: 700;
+    -fx-text-alignment: center;
+}
+
+.dark .story-name {
+    -fx-text-fill: #d8dee9;
+}
+
+.light .story-name {
+    -fx-text-fill: #374151;
+}
+
+.viewer-pane {
+    -fx-padding: 22;
+}
+
+.viewer {
+    -fx-max-width: 650;
+}
+
+.viewer-header {
+    -fx-padding: 0 0 14 0;
+}
+
+.viewer-title {
+    -fx-font-size: 22;
+    -fx-font-weight: 900;
+}
+
+.viewer-subtitle {
+    -fx-font-size: 13;
+    -fx-font-weight: 700;
+}
+
+.dark .viewer-title {
+    -fx-text-fill: #f8fafc;
+}
+
+.light .viewer-title {
+    -fx-text-fill: #111827;
+}
+
+.dark .viewer-subtitle,
+.dark .status-label {
+    -fx-text-fill: #9ca3af;
+}
+
+.light .viewer-subtitle,
+.light .status-label {
+    -fx-text-fill: #64748b;
+}
+
+.image-slot {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.30), 14, 0.2, 0, 5);
+}
+
+.dark .image-slot {
+    -fx-background-color: #1b2028;
+}
+
+.light .image-slot {
+    -fx-background-color: #e7ecf4;
+}
+
+.story-image {
+    -fx-background-radius: 8;
+}
+
+.viewer-toolbar {
+    -fx-padding: 14 0 0 0;
+}
+
+.button {
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+    -fx-font-size: 12;
+    -fx-font-weight: 800;
+    -fx-padding: 8 13;
+}
+
+.small-button,
+.arrow-button {
+    -fx-background-color: #252b35;
+    -fx-text-fill: #e5e7eb;
+}
+
+.light .small-button,
+.light .arrow-button {
+    -fx-background-color: #e6ebf2;
+    -fx-text-fill: #111827;
+}
+
+.arrow-button {
+    -fx-font-size: 20;
+    -fx-min-width: 48;
+    -fx-min-height: 48;
+    -fx-background-radius: 24;
+}
+
+.danger-button {
+    -fx-background-color: #f2d7d7;
+    -fx-text-fill: #8a1f1f;
+}
+
+.fatal-screen {
+    -fx-background-color: #101216;
+}
+
+.fatal-title {
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 22;
+    -fx-font-weight: 900;
+}
+
+.fatal-message {
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 13;
+}
