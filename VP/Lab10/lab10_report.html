@@ -1,0 +1,372 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Lab 10 Chat Application Report</title>
+    <style>
+        @page {
+            size: 8.5in 11in;
+            margin: 0.79in;
+        }
+        body {
+            font-family: "Liberation Serif", serif;
+            font-size: 12pt;
+            line-height: 1.15;
+            color: #000000;
+        }
+        h1 {
+            font-family: "Liberation Sans", sans-serif;
+            font-size: 18pt;
+            font-weight: bold;
+            margin-top: 12pt;
+            margin-bottom: 6pt;
+        }
+        h2 {
+            font-family: "Liberation Sans", sans-serif;
+            font-size: 16pt;
+            font-weight: bold;
+            margin-top: 12pt;
+            margin-bottom: 6pt;
+        }
+        p {
+            margin-top: 0;
+            margin-bottom: 8pt;
+        }
+        ul, ol {
+            margin-top: 0;
+            margin-bottom: 8pt;
+        }
+        pre {
+            font-family: "JetBrains Mono", "Liberation Mono", monospace;
+            font-size: 9.5pt;
+            line-height: 1.1;
+            margin: 8pt 0;
+            white-space: pre-wrap;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 6pt;
+            margin-bottom: 8pt;
+        }
+        th, td {
+            border: 1px solid #000000;
+            padding: 4pt;
+            vertical-align: top;
+            font-size: 11pt;
+        }
+        th {
+            font-weight: bold;
+        }
+        .caption {
+            text-align: center;
+            font-style: italic;
+            margin-top: 4pt;
+            margin-bottom: 12pt;
+        }
+        .placeholder {
+            border: 1.5pt solid #000000;
+            height: 2.25in;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: "Liberation Sans", sans-serif;
+            font-size: 12pt;
+            margin: 10pt 0 4pt 0;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+    </style>
+</head>
+<body>
+<h1>Introduction:</h1>
+<p>
+The purpose of this project was to implement a multi-user chat application using Java socket programming, JavaFX, FXML, and a MariaDB relational database. The application allows users to register, log in, view all registered users, select another user, exchange one-to-one messages, and reload previous message history from the database.
+</p>
+<p>
+The project was developed on an Arch Linux system. Since MariaDB is installed locally on this PC and is compatible with JDBC, the chat server connects to MariaDB through the MariaDB Java client driver instead of using a file-based SQLite database.
+</p>
+<p>The chat application covers the following tasks:</p>
+<ul>
+    <li>Register a user with a username and password.</li>
+    <li>Authenticate the user before opening the chat window.</li>
+    <li>Show all registered users in the client side panel.</li>
+    <li>Route messages to the selected recipient only.</li>
+    <li>Save users and messages in MariaDB.</li>
+    <li>Load previous conversation history when a user is selected.</li>
+</ul>
+
+<h1>Project Structure:</h1>
+<p>The project is a Maven Java project with one server program and one JavaFX client program.</p>
+<pre>Lab10
+|-- pom.xml
+|-- README.md
+|-- src
+|   |-- main
+|       |-- java
+|       |   |-- com.iut.chat
+|       |       |-- ChatClient.java
+|       |       |-- ChatClientApp.java
+|       |       |-- ChatClientLauncher.java
+|       |       |-- ChatDatabase.java
+|       |       |-- ChatProtocol.java
+|       |       |-- ChatServer.java
+|       |       |-- Message.java
+|       |-- resources
+|           |-- login-view.fxml
+|           |-- chat-view.fxml
+|           |-- style.css</pre>
+
+<p>
+ChatServer.java starts the socket server on port 5001. It accepts several clients at the same time, creates a separate ClientSession for every connected client, and uses a thread pool to process clients concurrently.
+</p>
+<p>
+ChatClient.java is a normal Java launcher class. It starts ChatClientApp.java, which is the JavaFX Application class. This separate launcher avoids the JavaFX runtime error that can happen when IntelliJ runs a JavaFX Application class directly without module path settings.
+</p>
+<p>
+ChatClientApp.java loads the FXML files from the resources folder, connects UI controls to event handlers, sends protocol commands to the server, and updates the chat window when messages or history lines are received.
+</p>
+<p>
+ChatDatabase.java manages all MariaDB operations. It creates the tables, registers users, authenticates passwords, returns the user list, saves messages, and loads chat history.
+</p>
+<p>
+ChatProtocol.java contains the text protocol helper methods. Message.java is a record class used for transferring message data inside the server code.
+</p>
+
+<h1>FXML Files:</h1>
+<p>
+The resources folder contains two FXML files that can be opened and edited in Scene Builder:
+</p>
+<ol>
+    <li>login-view.fxml</li>
+    <li>chat-view.fxml</li>
+</ol>
+<p>
+login-view.fxml contains the login/register screen. chat-view.fxml contains the main chat screen with the registered user list, message history area, message input field, and send button. The Java code accesses controls through fx:id values, so the fx:id values should not be removed while editing the layout in Scene Builder.
+</p>
+
+<div class="placeholder">Insert screenshot here:<br>login-view.fxml or chat-view.fxml opened in Scene Builder</div>
+<p class="caption">Fig: FXML layout opened in Scene Builder</p>
+
+<div class="placeholder">Insert screenshot here:<br>Running chat application with server and at least two client windows</div>
+<p class="caption">Fig: Running multi-user chat application</p>
+
+<h1>MariaDB Schema:</h1>
+<p>
+The application uses the MariaDB server installed on this PC. The default database connection is:
+</p>
+<pre>URL      : jdbc:mariadb://localhost:3306/test
+User     : tawfiq
+Password : empty</pre>
+<p>
+The server automatically creates the required tables when ChatServer starts.
+</p>
+
+<h2>1 . lab10_chat_users table</h2>
+<table>
+    <tr><th>Column</th><th>Data Type</th><th>Description</th></tr>
+    <tr><td>id</td><td>BIGINT AUTO_INCREMENT PRIMARY KEY</td><td>Internal user row id.</td></tr>
+    <tr><td>username</td><td>VARCHAR(20) UNIQUE NOT NULL</td><td>Login name of the user.</td></tr>
+    <tr><td>password_hash</td><td>CHAR(64) NOT NULL</td><td>SHA-256 hash of the salted password.</td></tr>
+    <tr><td>salt</td><td>CHAR(32) NOT NULL</td><td>Random salt used during password hashing.</td></tr>
+    <tr><td>created_at</td><td>BIGINT NOT NULL</td><td>Account creation time in milliseconds.</td></tr>
+</table>
+<p class="caption">Fig: Columns of lab10_chat_users table</p>
+
+<h2>2 . lab10_chat_messages table</h2>
+<table>
+    <tr><th>Column</th><th>Data Type</th><th>Description</th></tr>
+    <tr><td>id</td><td>BIGINT AUTO_INCREMENT PRIMARY KEY</td><td>Internal message row id.</td></tr>
+    <tr><td>sender</td><td>VARCHAR(20) NOT NULL</td><td>Username of the sender.</td></tr>
+    <tr><td>recipient</td><td>VARCHAR(20) NOT NULL</td><td>Username of the recipient.</td></tr>
+    <tr><td>body</td><td>TEXT NOT NULL</td><td>Message text.</td></tr>
+    <tr><td>sent_at</td><td>BIGINT NOT NULL</td><td>Message time in milliseconds.</td></tr>
+</table>
+<p class="caption">Fig: Columns of lab10_chat_messages table</p>
+
+<h2>Data Entry in Database Table</h2>
+<table>
+    <tr><th>username</th><th>created_at</th></tr>
+    <tr><td>ayan</td><td>1785083463512</td></tr>
+    <tr><td>tawfiq</td><td>1785083420835</td></tr>
+</table>
+<table>
+    <tr><th>sender</th><th>recipient</th><th>body</th><th>sent_at</th></tr>
+    <tr><td>ayan</td><td>tawfiq</td><td>hi</td><td>1785083484293</td></tr>
+    <tr><td>tawfiq</td><td>ayan</td><td>sup bihh</td><td>1785083501530</td></tr>
+</table>
+<p class="caption">Fig: Data entries in the MariaDB chat tables</p>
+
+<h1>Important Code Snippets:</h1>
+<h2>ChatDatabase.java</h2>
+<pre>private static final String DEFAULT_DB_URL = "jdbc:mariadb://localhost:3306/test";
+private static final String DEFAULT_DB_USER = "tawfiq";
+private static final String DEFAULT_DB_PASSWORD = "";
+private static final String DB_URL = setting("CHAT_DB_URL", DEFAULT_DB_URL);
+private static final String DB_USER = setting("CHAT_DB_USER", DEFAULT_DB_USER);
+private static final String DB_PASSWORD = setting("CHAT_DB_PASSWORD", DEFAULT_DB_PASSWORD);
+
+private Connection connect() throws SQLException {
+    return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+}</pre>
+<p>
+This part contains the database configuration. The server connects to the locally installed MariaDB server through JDBC. The environment variables allow the database URL, username, and password to be changed without editing the source code.
+</p>
+
+<pre>statement.executeUpdate("""
+        CREATE TABLE IF NOT EXISTS lab10_chat_users (
+            id BIGINT PRIMARY KEY AUTO_INCREMENT,
+            username VARCHAR(20) NOT NULL UNIQUE,
+            password_hash CHAR(64) NOT NULL,
+            salt CHAR(32) NOT NULL,
+            created_at BIGINT NOT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        """);
+
+statement.executeUpdate("""
+        CREATE TABLE IF NOT EXISTS lab10_chat_messages (
+            id BIGINT PRIMARY KEY AUTO_INCREMENT,
+            sender VARCHAR(20) NOT NULL,
+            recipient VARCHAR(20) NOT NULL,
+            body TEXT NOT NULL,
+            sent_at BIGINT NOT NULL,
+            FOREIGN KEY (sender) REFERENCES lab10_chat_users(username),
+            FOREIGN KEY (recipient) REFERENCES lab10_chat_users(username),
+            INDEX idx_lab10_messages_pair (sender, recipient, sent_at)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        """);</pre>
+<p>
+This creates the users and messages tables if they are not already present. The messages table stores sender and recipient usernames and uses foreign keys to connect them to registered users.
+</p>
+
+<pre>synchronized Message saveMessage(String sender, String recipient, String body) {
+    long sentAt = System.currentTimeMillis();
+    try (Connection connection = connect();
+         PreparedStatement statement = connection.prepareStatement(
+                 "INSERT INTO lab10_chat_messages(sender, recipient, body, sent_at) VALUES (?, ?, ?, ?)")) {
+        statement.setString(1, sender);
+        statement.setString(2, recipient);
+        statement.setString(3, body);
+        statement.setLong(4, sentAt);
+        statement.executeUpdate();
+        return new Message(sender, recipient, body, sentAt);
+    } catch (SQLException ex) {
+        throw new IllegalStateException("Could not save message", ex);
+    }
+}</pre>
+<p>
+This method saves every sent message in MariaDB. PreparedStatement is used so that user input is not directly concatenated into SQL.
+</p>
+
+<h2>ChatServer.java</h2>
+<pre>private final Map&lt;String, ClientSession&gt; onlineClients = new ConcurrentHashMap&lt;&gt;();
+private final ExecutorService clientPool = Executors.newCachedThreadPool();
+
+try (ServerSocket serverSocket = new ServerSocket(ChatProtocol.PORT)) {
+    while (true) {
+        Socket socket = serverSocket.accept();
+        clientPool.submit(new ClientSession(socket));
+    }
+}</pre>
+<p>
+This is how the server handles multiple clients. The server accepts a socket connection and immediately submits a new ClientSession to a thread pool. Therefore one connected client does not block the server from accepting other clients.
+</p>
+
+<pre>if (database.authenticate(requestedUsername, password)) {
+    username = requestedUsername;
+    ClientSession previous = onlineClients.put(username, this);
+    if (previous != null &amp;&amp; previous != this) {
+        previous.send(ChatProtocol.command("ERROR",
+                ChatProtocol.encode("You signed in from another window.")));
+        previous.close();
+    }
+    send(ChatProtocol.command("AUTH_OK", ChatProtocol.encode(username)));
+    broadcastUsers();
+}</pre>
+<p>
+This is the login handshake. The client sends a LOGIN command containing the encoded username and password. The server checks the password using ChatDatabase. If the login is valid, the server stores the username inside that ClientSession and adds the session to the onlineClients map. From this point, that socket connection is identified by its username.
+</p>
+
+<pre>Message message = database.saveMessage(username, recipient, body);
+String messageLine = messageLine(message);
+send(messageLine);
+ClientSession recipientClient = onlineClients.get(recipient);
+if (recipientClient != null) {
+    recipientClient.send(messageLine);
+}</pre>
+<p>
+This is the message routing logic. The server saves the message first. Then it sends the saved message back to the sender and also sends it to the recipient if the recipient is currently online. If the recipient is offline, the message still remains stored in MariaDB and will be loaded later from history.
+</p>
+
+<pre>send(ChatProtocol.command("HISTORY_BEGIN", ChatProtocol.encode(otherUser)));
+List&lt;Message&gt; history = database.history(username, otherUser);
+for (Message message : history) {
+    send(messageLine(message));
+}
+send(ChatProtocol.command("HISTORY_END", ChatProtocol.encode(otherUser)));</pre>
+<p>
+This loads previous conversation history. When the client selects another user, it sends a HISTORY command. The server queries all messages where the two users are sender and recipient in either order, sorts them by sent_at, and sends them back to the client.
+</p>
+
+<h2>ChatClientApp.java</h2>
+<pre>private Parent loginView() {
+    Parent root = loadView("/login-view.fxml");
+    usernameField = lookup(root, "usernameField");
+    passwordField = lookup(root, "passwordField");
+    statusLabel = lookup(root, "statusLabel");
+
+    Button loginButton = lookup(root, "loginButton");
+    loginButton.setDefaultButton(true);
+    loginButton.setOnAction(event -&gt; sendAuth("LOGIN"));
+
+    Button registerButton = lookup(root, "registerButton");
+    registerButton.setOnAction(event -&gt; sendAuth("REGISTER"));
+    return root;
+}</pre>
+<p>
+The client UI is loaded from FXML. The Java code looks up controls by fx:id and attaches event handlers to the login and register buttons.
+</p>
+
+<pre>private void selectConversation(String user) {
+    if (user == null || user.equals(currentUser)) {
+        return;
+    }
+    selectedUser = user;
+    conversationTitle.setText(user);
+    messageField.setDisable(false);
+    chatArea.setText(conversations.getOrDefault(user, new StringBuilder()).toString());
+    out.println(ChatProtocol.command("HISTORY", ChatProtocol.encode(user)));
+}</pre>
+<p>
+When a user is selected from the left panel, the client records that user as the current recipient and requests conversation history from the server.
+</p>
+
+<h1>Short Write-up:</h1>
+<h2>How the server handles multiple clients</h2>
+<p>
+The server uses ServerSocket to listen on port 5001. Every time a client connects, the server creates a ClientSession object for that socket. The ClientSession is submitted to an ExecutorService created with Executors.newCachedThreadPool(). Because every session runs on a separate worker thread, multiple clients can stay connected and send commands at the same time.
+</p>
+
+<h2>How login identifies each user</h2>
+<p>
+Before logging in, the server only knows that a socket is connected. The client sends REGISTER or LOGIN commands with encoded username and password fields. During login, ChatDatabase authenticates the username and password. If authentication succeeds, the server stores that username in the ClientSession and puts the session in onlineClients using the username as the key. This creates the connection between a socket and a user identity.
+</p>
+
+<h2>How messages are routed</h2>
+<p>
+The client sends a SEND command with the selected recipient and the message body. The server checks that the sender is logged in, the recipient exists, the recipient is not the sender, and the message is not blank. It then saves the message to MariaDB. After saving, it sends the message back to the sender and also looks up the recipient in onlineClients. If the recipient is online, the server sends the same message to the recipient's session. If the recipient is offline, no message is pushed immediately, but the database still stores it.
+</p>
+
+<h2>How message history is saved and loaded</h2>
+<p>
+Every message is inserted into lab10_chat_messages with sender, recipient, body, and sent_at. When a client selects a user, it sends a HISTORY command to the server. The server loads all rows where the two users appear as sender and recipient in either direction. The query orders messages by sent_at, so the conversation appears chronologically. The server wraps the result between HISTORY_BEGIN and HISTORY_END, and the client uses those protocol lines to refresh the chat area.
+</p>
+
+<h1>Conclusion:</h1>
+<p>
+This project implements a multi-user socket chat application with a JavaFX client, editable FXML layouts, and MariaDB persistence. The server supports several clients using a thread pool, identifies each socket after login, routes one-to-one messages to the correct recipient, and stores conversation history in database tables so that old messages are available after reconnecting or reopening a conversation.
+</p>
+</body>
+</html>

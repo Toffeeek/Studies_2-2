@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="560.0" prefWidth="860.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <left>
+        <VBox prefWidth="220.0" spacing="10.0" styleClass="sidebar">
+            <padding>
+                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+            </padding>
+            <children>
+                <Label text="Registered Users" />
+                <ListView fx:id="userListView" VBox.vgrow="ALWAYS" />
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <VBox spacing="10.0">
+            <padding>
+                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+            </padding>
+            <children>
+                <Label fx:id="conversationTitle" styleClass="conversation-title" text="Select a user" />
+                <TextArea fx:id="chatArea" editable="false" wrapText="true" VBox.vgrow="ALWAYS" />
+                <HBox spacing="8.0">
+                    <children>
+                        <TextField fx:id="messageField" promptText="Type a message" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="sendButton" text="Send" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>
