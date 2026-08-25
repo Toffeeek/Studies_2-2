@@ -21,7 +21,7 @@ Then run the JavaFX client:
 ```bash
 javac -cp "lib/mysql-connector-j.jar:lib/javafx/*" -d out/production/Lab12 $(find src -name '*.java')
 mkdir -p out/production/Lab12/resources
-cp src/resources/styles.css out/production/Lab12/resources/styles.css
+cp src/resources/* out/production/Lab12/resources/
 java --module-path lib/javafx --add-modules javafx.controls,javafx.fxml -cp "out/production/Lab12:lib/mysql-connector-j.jar" application.Main
 ```
 

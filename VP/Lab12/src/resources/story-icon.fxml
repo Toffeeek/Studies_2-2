@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="7" stylesheets="@styles.css" xmlns:fx="http://javafx.com/fxml">
+    <styleClass>
+        <String fx:value="story-item" />
+    </styleClass>
+    <children>
+        <StackPane fx:id="avatarRing">
+            <children>
+                <ImageView fx:id="avatarImageView" fitHeight="62" fitWidth="62" preserveRatio="false" />
+            </children>
+        </StackPane>
+        <Label fx:id="nameLabel" alignment="CENTER" maxWidth="82">
+            <styleClass>
+                <String fx:value="story-name" />
+            </styleClass>
+        </Label>
+    </children>
+</VBox>

@@ -6,6 +6,8 @@ import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -15,17 +17,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class StoriesApplication extends Application {
     private static final int STORY_LOAD_DELAY_MS = 1600;
@@ -73,100 +75,42 @@ public class StoriesApplication extends Application {
     }
 
     private BorderPane buildMainView() {
-        BorderPane layout = new BorderPane();
-        layout.getStyleClass().addAll("app-root", "dark");
+        try {
+            FXMLLoader loader = new FXMLLoader(StoriesApplication.class.getResource("/resources/stories-view.fxml"));
+            BorderPane layout = loader.load();
+            Map<String, Object> controls = loader.getNamespace();
 
-        Label brand = new Label("Stories");
-        brand.getStyleClass().add("brand-title");
+            storyRow = getControl(controls, "storyRow", HBox.class);
+            viewerPane = getControl(controls, "viewerPane", StackPane.class);
+            storyImageView = getControl(controls, "storyImageView", ImageView.class);
+            progressIndicator = getControl(controls, "progressIndicator", ProgressIndicator.class);
+            statusLabel = getControl(controls, "statusLabel", Label.class);
+            titleLabel = getControl(controls, "titleLabel", Label.class);
+            subtitleLabel = getControl(controls, "subtitleLabel", Label.class);
+            leftButton = getControl(controls, "leftButton", Button.class);
+            rightButton = getControl(controls, "rightButton", Button.class);
+            deleteButton = getControl(controls, "deleteButton", Button.class);
+            themeButton = getControl(controls, "themeButton", Button.class);
 
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
+            themeButton.setOnAction(event -> toggleTheme());
+            leftButton.setOnAction(event -> showPreviousStory());
+            rightButton.setOnAction(event -> showNextStory());
+            deleteButton.setOnAction(event -> deleteCurrentStory());
+            deleteButton.setVisible(false);
+            updateNavigationButtons();
 
-        themeButton = new Button("Light");
-        themeButton.getStyleClass().add("small-button");
-        themeButton.setOnAction(event -> toggleTheme());
-
-        HBox topBar = new HBox(12, brand, spacer, themeButton);
-        topBar.getStyleClass().add("top-bar");
-        topBar.setAlignment(Pos.CENTER_LEFT);
-
-        storyRow = new HBox(14);
-        storyRow.getStyleClass().add("story-row");
-        storyRow.setAlignment(Pos.CENTER_LEFT);
-
-        VBox top = new VBox(topBar, storyRow);
-        layout.setTop(top);
-
-        viewerPane = new StackPane();
-        viewerPane.getStyleClass().add("viewer-pane");
-        layout.setCenter(viewerPane);
-        buildViewer();
-
-        return layout;
+            return layout;
+        } catch (IOException exception) {
+            throw new IllegalStateException("Could not load stories-view.fxml", exception);
+        }
     }
 
-    private void buildViewer() {
-        storyImageView = new ImageView();
-        storyImageView.setFitWidth(430);
-        storyImageView.setFitHeight(560);
-        storyImageView.setPreserveRatio(false);
-        storyImageView.getStyleClass().add("story-image");
-
-        titleLabel = new Label("Select a story");
-        titleLabel.getStyleClass().add("viewer-title");
-
-        subtitleLabel = new Label("The story row stays usable while images load in the background.");
-        subtitleLabel.getStyleClass().add("viewer-subtitle");
-
-        statusLabel = new Label("Ready");
-        statusLabel.getStyleClass().add("status-label");
-
-        progressIndicator = new ProgressIndicator();
-        progressIndicator.setMaxSize(54, 54);
-        progressIndicator.setVisible(false);
-
-        leftButton = new Button("<");
-        leftButton.getStyleClass().add("arrow-button");
-        leftButton.setOnAction(event -> showPreviousStory());
-
-        rightButton = new Button(">");
-        rightButton.getStyleClass().add("arrow-button");
-        rightButton.setOnAction(event -> showNextStory());
-
-        deleteButton = new Button("Delete");
-        deleteButton.getStyleClass().add("danger-button");
-        deleteButton.setOnAction(event -> deleteCurrentStory());
-
-        HBox header = new HBox(10, titleLabel, subtitleLabel);
-        header.getStyleClass().add("viewer-header");
-        header.setAlignment(Pos.CENTER_LEFT);
-
-        Region toolbarSpacer = new Region();
-        HBox.setHgrow(toolbarSpacer, Priority.ALWAYS);
-
-        HBox toolbar = new HBox(10, statusLabel, toolbarSpacer, deleteButton);
-        toolbar.getStyleClass().add("viewer-toolbar");
-        toolbar.setAlignment(Pos.CENTER_LEFT);
-
-        StackPane imageSlot = new StackPane(storyImageView, progressIndicator);
-        imageSlot.getStyleClass().add("image-slot");
-        imageSlot.setMaxSize(430, 560);
-
-        BorderPane viewer = new BorderPane();
-        viewer.getStyleClass().add("viewer");
-        viewer.setTop(header);
-        viewer.setCenter(imageSlot);
-        viewer.setBottom(toolbar);
-        viewer.setLeft(leftButton);
-        viewer.setRight(rightButton);
-        BorderPane.setAlignment(leftButton, Pos.CENTER);
-        BorderPane.setAlignment(rightButton, Pos.CENTER);
-        BorderPane.setMargin(leftButton, new Insets(0, 18, 0, 0));
-        BorderPane.setMargin(rightButton, new Insets(0, 0, 0, 18));
-
-        viewerPane.getChildren().setAll(viewer);
-        deleteButton.setVisible(false);
-        updateNavigationButtons();
+    private <T> T getControl(Map<String, Object> controls, String id, Class<T> type) {
+        Object control = controls.get(id);
+        if (!type.isInstance(control)) {
+            throw new IllegalStateException("Missing FXML control: " + id);
+        }
+        return type.cast(control);
     }
 
     private void loadStories() {
@@ -206,26 +150,24 @@ public class StoriesApplication extends Application {
         }
     }
 
-    private VBox createStoryIcon(Story story, int storyIndex) {
-        ImageView avatar = new ImageView(new Image(story.getAvatarUrl(), 62, 62, false, true, true));
-        avatar.setFitWidth(62);
-        avatar.setFitHeight(62);
-        avatar.setPreserveRatio(false);
-        avatar.setClip(new Circle(31, 31, 31));
+    private Node createStoryIcon(Story story, int storyIndex) {
+        try {
+            FXMLLoader loader = new FXMLLoader(StoriesApplication.class.getResource("/resources/story-icon.fxml"));
+            VBox item = loader.load();
+            Map<String, Object> controls = loader.getNamespace();
+            StackPane ring = getControl(controls, "avatarRing", StackPane.class);
+            ImageView avatar = getControl(controls, "avatarImageView", ImageView.class);
+            Label name = getControl(controls, "nameLabel", Label.class);
 
-        StackPane ring = new StackPane(avatar);
-        ring.getStyleClass().add(story.isUnseen() ? "avatar-ring-unseen" : "avatar-ring-seen");
-
-        Label name = new Label(story.getDisplayName());
-        name.getStyleClass().add("story-name");
-        name.setMaxWidth(82);
-        name.setAlignment(Pos.CENTER);
-
-        VBox item = new VBox(7, ring, name);
-        item.getStyleClass().add("story-item");
-        item.setAlignment(Pos.CENTER);
-        item.setOnMouseClicked(event -> loadStory(storyIndex));
-        return item;
+            ring.getStyleClass().add(story.isUnseen() ? "avatar-ring-unseen" : "avatar-ring-seen");
+            avatar.setImage(new Image(story.getAvatarUrl(), 62, 62, false, true, true));
+            avatar.setClip(new Circle(31, 31, 31));
+            name.setText(story.getDisplayName());
+            item.setOnMouseClicked(event -> loadStory(storyIndex));
+            return item;
+        } catch (IOException exception) {
+            throw new IllegalStateException("Could not load story-icon.fxml", exception);
+        }
     }
 
     private void loadStory(int index) {

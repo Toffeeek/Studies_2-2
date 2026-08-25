@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="rootPane" stylesheets="@styles.css" xmlns:fx="http://javafx.com/fxml">
+    <styleClass>
+        <String fx:value="app-root" />
+        <String fx:value="dark" />
+    </styleClass>
+    <top>
+        <VBox>
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <styleClass>
+                        <String fx:value="top-bar" />
+                    </styleClass>
+                    <children>
+                        <Label text="Stories">
+                            <styleClass>
+                                <String fx:value="brand-title" />
+                            </styleClass>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="themeButton" text="Light">
+                            <styleClass>
+                                <String fx:value="small-button" />
+                            </styleClass>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox fx:id="storyRow" alignment="CENTER_LEFT" spacing="14">
+                    <styleClass>
+                        <String fx:value="story-row" />
+                    </styleClass>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+    <center>
+        <StackPane fx:id="viewerPane">
+            <styleClass>
+                <String fx:value="viewer-pane" />
+            </styleClass>
+            <children>
+                <BorderPane maxWidth="650">
+                    <styleClass>
+                        <String fx:value="viewer" />
+                    </styleClass>
+                    <top>
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <styleClass>
+                                <String fx:value="viewer-header" />
+                            </styleClass>
+                            <children>
+                                <Label fx:id="titleLabel" text="Select a story">
+                                    <styleClass>
+                                        <String fx:value="viewer-title" />
+                                    </styleClass>
+                                </Label>
+                                <Label fx:id="subtitleLabel" text="The story row stays usable while images load in the background.">
+                                    <styleClass>
+                                        <String fx:value="viewer-subtitle" />
+                                    </styleClass>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </top>
+                    <left>
+                        <Button fx:id="leftButton" text="&lt;">
+                            <styleClass>
+                                <String fx:value="arrow-button" />
+                            </styleClass>
+                            <BorderPane.alignment>
+                                <Pos fx:constant="CENTER" />
+                            </BorderPane.alignment>
+                            <BorderPane.margin>
+                                <Insets right="18" />
+                            </BorderPane.margin>
+                        </Button>
+                    </left>
+                    <center>
+                        <StackPane maxHeight="560" maxWidth="430">
+                            <styleClass>
+                                <String fx:value="image-slot" />
+                            </styleClass>
+                            <children>
+                                <ImageView fx:id="storyImageView" fitHeight="560" fitWidth="430" preserveRatio="false">
+                                    <styleClass>
+                                        <String fx:value="story-image" />
+                                    </styleClass>
+                                </ImageView>
+                                <ProgressIndicator fx:id="progressIndicator" maxHeight="54" maxWidth="54" visible="false" />
+                            </children>
+                        </StackPane>
+                    </center>
+                    <right>
+                        <Button fx:id="rightButton" text="&gt;">
+                            <styleClass>
+                                <String fx:value="arrow-button" />
+                            </styleClass>
+                            <BorderPane.alignment>
+                                <Pos fx:constant="CENTER" />
+                            </BorderPane.alignment>
+                            <BorderPane.margin>
+                                <Insets left="18" />
+                            </BorderPane.margin>
+                        </Button>
+                    </right>
+                    <bottom>
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <styleClass>
+                                <String fx:value="viewer-toolbar" />
+                            </styleClass>
+                            <children>
+                                <Label fx:id="statusLabel" text="Ready">
+                                    <styleClass>
+                                        <String fx:value="status-label" />
+                                    </styleClass>
+                                </Label>
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Button fx:id="deleteButton" text="Delete">
+                                    <styleClass>
+                                        <String fx:value="danger-button" />
+                                    </styleClass>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </bottom>
+                </BorderPane>
+            </children>
+        </StackPane>
+    </center>
+</BorderPane>
