@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Main" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="application.Main" />
-    <module name="Lab8" />
+    <module name="ClientProject" />
     <option name="VM_PARAMETERS" value="--module-path &quot;$PROJECT_DIR$/lib/javafx&quot; --add-modules javafx.controls,javafx.fxml" />
     <method v="2">
       <option name="Make" enabled="true" />

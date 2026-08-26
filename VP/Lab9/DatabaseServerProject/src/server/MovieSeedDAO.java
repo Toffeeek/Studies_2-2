@@ -11,6 +11,7 @@ import java.util.List;
 
 public class MovieSeedDAO {
     public void initializeDatabase() throws SQLException {
+        createDatabase();
         createTables();
         seedMovies();
     }
@@ -25,6 +26,16 @@ public class MovieSeedDAO {
                 return resultSet.getInt("movie_count");
             }
             return 0;
+        }
+    }
+
+    private void createDatabase() throws SQLException {
+        String sql = "CREATE DATABASE IF NOT EXISTS `" + DBConnection.getDatabaseName() + "` "
+                + "CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+
+        try (Connection connection = DBConnection.getServerConnection();
+             Statement statement = connection.createStatement()) {
+            statement.execute(sql);
         }
     }
 

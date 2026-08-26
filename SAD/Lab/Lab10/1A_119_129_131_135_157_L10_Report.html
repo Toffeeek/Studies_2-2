@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Livestock Management System - Lab Report 10</title>
+  <style>
+    @page { size: A4; margin: 1in; }
+    body {
+      font-family: "Times New Roman", "Liberation Serif", serif;
+      font-size: 12pt;
+      line-height: 1.5;
+      color: #111;
+    }
+    .cover {
+      text-align: center;
+      page-break-after: always;
+    }
+    .cover h1 {
+      font-size: 20pt;
+      margin: 0 0 26pt 0;
+      letter-spacing: 0;
+      font-weight: bold;
+    }
+    .cover h2 {
+      font-size: 16pt;
+      margin: 0 0 10pt 0;
+      font-weight: bold;
+    }
+    .cover h3 {
+      font-size: 14pt;
+      margin: 0 0 10pt 0;
+      font-weight: bold;
+    }
+    .cover .spacer { height: 34pt; }
+    h1 {
+      font-size: 16pt;
+      margin: 0 0 12pt 0;
+      font-weight: bold;
+      page-break-before: always;
+    }
+    h2 {
+      font-size: 14pt;
+      margin: 16pt 0 8pt 0;
+      font-weight: bold;
+    }
+    h3 {
+      font-size: 12.5pt;
+      margin: 12pt 0 6pt 0;
+      font-weight: bold;
+    }
+    p { margin: 0 0 8pt 0; text-align: justify; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 8pt 0 4pt 0;
+      font-size: 10.5pt;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 5pt;
+      vertical-align: top;
+    }
+    th {
+      font-weight: bold;
+      text-align: center;
+      background: #f2f2f2;
+    }
+    .no-border td, .no-border th { border: none; }
+    .members {
+      width: 75%;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 12pt;
+    }
+    .members th, .members td {
+      border: none;
+      padding: 6pt;
+    }
+    .caption {
+      text-align: center;
+      font-size: 10.5pt;
+      margin: 2pt 0 10pt 0;
+    }
+    .toc table { font-size: 12pt; }
+    .toc td, .toc th { border: none; padding: 4pt; }
+    .toc td:last-child { text-align: right; width: 14%; }
+    ul { margin-top: 0; }
+    li { margin-bottom: 4pt; }
+    .code {
+      font-family: "Liberation Mono", "Courier New", monospace;
+      font-size: 10.5pt;
+      line-height: 1.35;
+      border: 1px solid #777;
+      padding: 10pt;
+      white-space: pre-wrap;
+      margin: 8pt 0 4pt 0;
+      background: #fbfbfb;
+    }
+    .small { font-size: 10.5pt; }
+    .center { text-align: center; }
+    .tree {
+      font-family: "Liberation Mono", "Courier New", monospace;
+      font-size: 10pt;
+      line-height: 1.25;
+      border: 1px solid #333;
+      padding: 10pt;
+      white-space: pre;
+      margin: 8pt 0 4pt 0;
+    }
+    .u { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="cover">
+    <h1>ISLAMIC UNIVERSITY OF TECHNOLOGY</h1>
+    <div class="spacer"></div>
+    <h2>Lab Report 10</h2>
+    <h2>Livestock Management System</h2>
+    <h3>CSE 4408: System Analysis and Design Lab</h3>
+    <h3>Lab 10: Process Specification and Structured Decisions</h3>
+    <div class="spacer"></div>
+    <table class="members">
+      <tr><th>Team Member</th><th>Student ID</th></tr>
+      <tr><td>Ahmed Sanjeed Sadat Kibria Sadnan</td><td class="center">230041119</td></tr>
+      <tr><td>Tawfiq Ahmed Tasin</td><td class="center">230041129</td></tr>
+      <tr><td>Md Shahamat Irtisham</td><td class="center">230041131</td></tr>
+      <tr><td>Syed Abtahi Bin Mashak</td><td class="center">230041135</td></tr>
+      <tr><td>Md Arkam Hossain</td><td class="center">230041157</td></tr>
+    </table>
+    <div class="spacer"></div>
+    <p class="center"><b>Team: Go Paloks</b></p>
+    <p class="center">Date: July 29, 2026</p>
+  </div>
+
+  <div class="toc">
+    <h1>Table of Contents</h1>
+    <table>
+      <tr><th>Section</th><th>Title</th><th>Page</th></tr>
+      <tr><td>1</td><td>Introduction and System Context</td><td>3</td></tr>
+      <tr><td>2</td><td>Candidate Primitive Processes and Selection</td><td>5</td></tr>
+      <tr><td>3</td><td>Process Specification Forms</td><td>7</td></tr>
+      <tr><td>4</td><td>Structured English Specification</td><td>11</td></tr>
+      <tr><td>5</td><td>Decision Table</td><td>13</td></tr>
+      <tr><td>6</td><td>Decision Tree</td><td>15</td></tr>
+      <tr><td>7</td><td>Ambiguity Handling and Traceability</td><td>17</td></tr>
+      <tr><td>8</td><td>Conclusion</td><td>18</td></tr>
+      <tr><td>9</td><td>References</td><td>19</td></tr>
+    </table>
+  </div>
+
+  <h1>1. Introduction and System Context</h1>
+  <h2>1.1 Organizational Context</h2>
+  <p>The Livestock Management System is an integrated farm management system for poultry, fisheries and cattle operations. The proposed system centralizes daily operations, feed and inventory control, health monitoring, sales processing and owner reporting. Its main goal is to improve efficiency, reduce wastage, support prompt alerts and provide real-time monitoring for farm decisions.</p>
+  <p>The earlier DFD work identified the system boundary, five major business processes and the logical data stores required for implementation. Lab 10 extends that analysis by specifying the internal logic of selected primitive processes. The focus shifts from what data moves between entities, processes and stores to how the system validates, transforms and records the data.</p>
+
+  <h2>1.2 Purpose and Scope of the Report</h2>
+  <p>This report documents the process specification and structured decision analysis for selected primitive processes in the Livestock Management System. It identifies candidate primitive processes from the Level 0 and lower-level DFDs, selects exactly three processes for formal specification, prepares a process specification form for each selected process and represents the process logic using Structured English, a Decision Table and a Decision Tree.</p>
+  <p>The report uses the same logical data-store numbering used in the DFD presentation: D1 Farm Structure, D2 Operation Logs, D3 Inventory Records, D4 Health Records and D5 Sales Orders. Each specification is written so that it can be traced back to the relevant DFD process number and data flows.</p>
+
+  <h2>1.3 Role of Process Specifications</h2>
+  <p>A DFD describes external entities, data flows, data stores and process boundaries. A process specification, or mini specification, describes the detailed processing rules inside a primitive process. It reduces ambiguity, validates that the DFD has the required inputs and outputs, and provides a precise implementation blueprint for programmers.</p>
+  <p>The selected techniques are used according to the nature of the process logic. Structured English is used for a sequential process with one repeated block, a Decision Table is used for several interacting validation conditions, and a Decision Tree is used where the order of decisions and branch outcomes must be visually traceable.</p>
+
+  <h1>2. Candidate Primitive Processes and Selection</h1>
+  <h2>2.1 Candidate Primitive Processes</h2>
+  <p>The candidate processes were taken from the team presentation and the refined DFD set. Four candidates come from the child diagram of Process 2, Record Daily Operations, and one candidate comes from Process 5, Process Sales and Availability.</p>
+  <table>
+    <tr><th>DFD No.</th><th>Primitive Process</th><th>Reason for Consideration</th></tr>
+    <tr><td>2.1</td><td>Capture Daily Feed Log</td><td>This process starts the daily feed-entry flow and collects the worker-submitted operational data.</td></tr>
+    <tr><td>2.2</td><td>Validate Batch &amp; Quantity</td><td>This process contains multiple validation conditions involving livestock group, feed batch, quantity and stock level.</td></tr>
+    <tr><td>2.3</td><td>Generate Task Schedule</td><td>This process generates worker tasks from operation status and updated farm information.</td></tr>
+    <tr><td>2.4</td><td>Update Daily Operation Log</td><td>This process applies an ordered sequence and repeats feed-line updates before producing an operation summary.</td></tr>
+    <tr><td>5</td><td>Process Sales &amp; Availability</td><td>This process decides whether a buyer order can be confirmed, partially fulfilled or rejected based on buyer and stock conditions.</td></tr>
+  </table>
+  <p class="caption">Table 1: Candidate primitive processes considered for formal process specification.</p>
+
+  <h2>2.2 Selected Processes</h2>
+  <table>
+    <tr><th>Selected Process</th><th>Technique</th><th>Selection Rationale</th></tr>
+    <tr><td>2.4 Update Daily Operation Log</td><td>Structured English</td><td>The process is mostly sequential and contains a simple loop over feed usage lines. Structured English expresses this logic clearly without an unnecessarily large table.</td></tr>
+    <tr><td>2.2 Validate Batch &amp; Quantity</td><td>Decision Table</td><td>The process depends on several interacting yes/no conditions. A table shows rule patterns, merged rules, early stopping and validation outcomes compactly.</td></tr>
+    <tr><td>5 Process Sales &amp; Availability</td><td>Decision Tree</td><td>The process follows an ordered branch sequence: receive order, validate buyer information, check stock and then choose confirm, partial offer or rejection.</td></tr>
+  </table>
+  <p class="caption">Table 2: Selected processes and structured decision analysis techniques.</p>
+
+  <h2>2.3 Processes Not Selected</h2>
+  <p>Process 2.1 Capture Daily Feed Log was not selected because most of its work is data capture and required-field collection, which can be handled through form controls and data dictionary rules. Process 2.3 Generate Task Schedule was not selected because its current rules are simpler than the validation and sales-availability logic. These processes remain important in the DFD, but the selected three processes better demonstrate sequence, condition and branching constructs.</p>
+
+  <h1>3. Process Specification Forms</h1>
+  <h2>3.1 Process Specification Form: Update Daily Operation Log</h2>
+  <table>
+    <tr><th>Field</th><th>Specification</th></tr>
+    <tr><td>Process Number</td><td>2.4</td></tr>
+    <tr><td>Process Name</td><td>Update Daily Operation Log</td></tr>
+    <tr><td>Brief Description</td><td>Appends accepted feed usage details to the daily operation log, links each line to worker and farm context, calculates total daily feed consumption and generates an operation summary.</td></tr>
+    <tr><td>Input Data Flows</td><td>Validated Feed Log; Task Completion Status</td></tr>
+    <tr><td>Output Data Flows</td><td>Updated Operation Log; Operation Summary</td></tr>
+    <tr><td>Data Stores Used</td><td>D2 Operation Logs; D3 Inventory Records</td></tr>
+    <tr><td>Trigger</td><td>Farm worker feed log is accepted after validation.</td></tr>
+    <tr><td>Precondition</td><td>Feed batch and livestock group are valid, and the accepted feed log contains one or more feed usage lines.</td></tr>
+    <tr><td>Postcondition</td><td>The daily operation record is saved and a summary is available for reporting.</td></tr>
+    <tr><td>Business Rules</td><td>Every feed usage line must be recorded under the correct date, worker, farm section and livestock group. The daily total must be recalculated after accepted entries are appended.</td></tr>
+    <tr><td>Technique Used</td><td>Structured English, because the logic is ordered and includes a small repeated block.</td></tr>
+    <tr><td>Unresolved Issues</td><td>The final audit-retention period for corrected operation-log entries should be confirmed by the farm manager.</td></tr>
+  </table>
+  <p class="caption">Table 3: Process specification form for Process 2.4.</p>
+
+  <h2>3.2 Process Specification Form: Validate Batch &amp; Quantity</h2>
+  <table>
+    <tr><th>Field</th><th>Specification</th></tr>
+    <tr><td>Process Number</td><td>2.2</td></tr>
+    <tr><td>Process Name</td><td>Validate Batch &amp; Quantity</td></tr>
+    <tr><td>Brief Description</td><td>Checks whether the submitted feed usage data refers to a valid livestock group and feed batch, contains a positive quantity and has sufficient available stock.</td></tr>
+    <tr><td>Input Data Flows</td><td>Daily Feed Logs; Required Feed Data</td></tr>
+    <tr><td>Output Data Flows</td><td>Validated Feed Log; Update Stock; Exception Notice</td></tr>
+    <tr><td>Data Stores Used</td><td>D1 Farm Structure; D3 Inventory Records</td></tr>
+    <tr><td>Trigger</td><td>Worker submits feed usage data.</td></tr>
+    <tr><td>Precondition</td><td>The submitted feed log contains the required fields for worker, livestock group, feed batch and quantity.</td></tr>
+    <tr><td>Postcondition</td><td>The feed log is accepted for operation-log update, returned for correction or held with an exception notice.</td></tr>
+    <tr><td>Business Rules</td><td>The system accepts feed usage only when the livestock group is valid, the feed batch exists, the quantity is greater than zero and stock is sufficient.</td></tr>
+    <tr><td>Technique Used</td><td>Decision Table, because multiple validation conditions interact and early failure rules can be merged.</td></tr>
+    <tr><td>Unresolved Issues</td><td>The exact low-stock alert threshold and approval authority for held logs should be finalized.</td></tr>
+  </table>
+  <p class="caption">Table 4: Process specification form for Process 2.2.</p>
+
+  <h2>3.3 Process Specification Form: Process Sales &amp; Availability</h2>
+  <table>
+    <tr><th>Field</th><th>Specification</th></tr>
+    <tr><td>Process Number</td><td>5</td></tr>
+    <tr><td>Process Name</td><td>Process Sales &amp; Availability</td></tr>
+    <tr><td>Brief Description</td><td>Evaluates buyer orders against buyer details and inventory data to confirm the order, offer partial availability or reject the order.</td></tr>
+    <tr><td>Input Data Flows</td><td>Product Orders; Inventory Data</td></tr>
+    <tr><td>Output Data Flows</td><td>Availability; Order Confirmation; Order Rejection</td></tr>
+    <tr><td>Data Stores Used</td><td>D5 Sales Orders; D3 Inventory Records</td></tr>
+    <tr><td>Trigger</td><td>Buyer submits a product order.</td></tr>
+    <tr><td>Precondition</td><td>Buyer details and product items are available for checking.</td></tr>
+    <tr><td>Postcondition</td><td>The order is confirmed, partially offered or rejected, and the buyer is notified of the outcome.</td></tr>
+    <tr><td>Business Rules</td><td>Availability must be checked before confirming sales. Full stock allows confirmation and reservation. Partial stock allows a partial offer only when the buyer accepts the reduced quantity. No stock or invalid buyer information leads to rejection or correction.</td></tr>
+    <tr><td>Technique Used</td><td>Decision Tree, because the decision sequence and unequal branch lengths are important.</td></tr>
+    <tr><td>Unresolved Issues</td><td>The partial-order acceptance rule should be added to the sales form before implementation.</td></tr>
+  </table>
+  <p class="caption">Table 5: Process specification form for Process 5.</p>
+
+  <h1>4. Structured English Specification</h1>
+  <h2>4.1 Structured English for Process 2.4</h2>
+  <p>The following specification uses capitalized logic keywords and indentation. Underlined terms are data dictionary terms from the DFD and process specification forms.</p>
+  <div class="code">UPDATE <span class="u">Daily Operation Log</span>
+
+RECEIVE <span class="u">Validated Feed Log</span>
+
+READ <span class="u">Current Operation Log</span> FOR <span class="u">Feeding Date</span>
+
+IF <span class="u">Operation Log</span> DOES NOT EXIST
+    THEN CREATE NEW <span class="u">Daily Operation Record</span>
+ENDIF
+
+FOR EACH <span class="u">Feed Usage Line</span> IN <span class="u">Daily Feed Log Record</span>
+    ADD <span class="u">Feed Usage Entry</span> TO <span class="u">Operation Log</span>
+    LINK <span class="u">Feed Usage Entry</span> WITH <span class="u">Worker</span>
+    LINK <span class="u">Feed Usage Entry</span> WITH <span class="u">Farm Section</span>
+    LINK <span class="u">Feed Usage Entry</span> WITH <span class="u">Livestock Group</span>
+ENDFOR
+
+CALCULATE <span class="u">Total Feed Consumed</span> FOR THE DAY
+
+STORE UPDATED <span class="u">Operation Log</span>
+
+GENERATE <span class="u">Operation Summary</span>
+
+END UPDATE <span class="u">Daily Operation Log</span></div>
+  <p class="caption">Figure 1: Structured English specification for Process 2.4 Update Daily Operation Log.</p>
+
+  <h2>4.2 Narrative Explanation</h2>
+  <p>The process begins only after the feed log has been validated. It first finds the operation log for the feeding date. If no log exists, the system creates a new daily operation record. The repeated part of the process then handles each feed usage line independently so that every item is tied to the responsible worker, farm section and livestock group. After all lines are appended, the system recalculates the total feed consumed and stores the updated record.</p>
+  <p>This logic is suitable for Structured English because the main path is sequential and the only iteration is the repeated update for each feed usage line. A decision table would be larger than necessary, and a decision tree would not show the repeated data-processing block as clearly.</p>
+
+  <h1>5. Decision Table</h1>
+  <h2>5.1 Decision Table for Process 2.2</h2>
+  <p>The decision table below represents the validation logic for Process 2.2 Validate Batch &amp; Quantity. The dash symbol means "do not care"; once a prerequisite fails, later conditions do not affect the outcome of that rule.</p>
+  <table>
+    <tr><th>Conditions / Actions</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>R5</th></tr>
+    <tr><td>Livestock group valid?</td><td class="center">N</td><td class="center">Y</td><td class="center">Y</td><td class="center">Y</td><td class="center">Y</td></tr>
+    <tr><td>Feed batch exists?</td><td class="center">-</td><td class="center">N</td><td class="center">Y</td><td class="center">Y</td><td class="center">Y</td></tr>
+    <tr><td>Quantity greater than zero?</td><td class="center">-</td><td class="center">-</td><td class="center">N</td><td class="center">Y</td><td class="center">Y</td></tr>
+    <tr><td>Stock sufficient?</td><td class="center">-</td><td class="center">-</td><td class="center">-</td><td class="center">N</td><td class="center">Y</td></tr>
+    <tr><td>Reject: invalid livestock group</td><td class="center">X</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Reject: unknown feed batch</td><td></td><td class="center">X</td><td></td><td></td><td></td></tr>
+    <tr><td>Return for quantity correction</td><td></td><td></td><td class="center">X</td><td></td><td></td></tr>
+    <tr><td>Hold log and create stock exception</td><td></td><td></td><td></td><td class="center">X</td><td></td></tr>
+    <tr><td>Accept validated feed log</td><td></td><td></td><td></td><td></td><td class="center">X</td></tr>
+    <tr><td>Update inventory record</td><td></td><td></td><td></td><td></td><td class="center">X</td></tr>
+  </table>
+  <p class="caption">Table 6: Decision table for Process 2.2 Validate Batch &amp; Quantity.</p>
+
+  <h2>5.2 Rule Interpretation</h2>
+  <p>Rule R1 rejects the feed log immediately when the livestock group is invalid. Rule R2 rejects the log when the livestock group is valid but the feed batch is unknown. Rule R3 returns the log for correction when the quantity is not greater than zero. Rule R4 holds the log and creates a stock exception when the requested quantity exceeds available stock. Rule R5 accepts the log and updates the inventory record only when all four validation conditions are satisfied.</p>
+
+  <h2>5.3 Simplification and Error Check</h2>
+  <p>The original four yes/no conditions could produce sixteen rule columns. The table is simplified to five meaningful rules by using early prerequisite checks. For example, when the livestock group is invalid, it is unnecessary to check the feed batch, quantity or stock level. No contradictions are present because no identical condition pattern leads to two different actions. The merged rules remove redundant combinations while preserving all possible validation outcomes.</p>
+
+  <h1>6. Decision Tree</h1>
+  <h2>6.1 Decision Tree for Process 5</h2>
+  <p>The decision tree below represents Process 5 Process Sales &amp; Availability. It is drawn from left to right so that the reader can trace the exact order of decisions and resulting actions.</p>
+  <div class="tree">[1] Product order received?
+ |-- No  --> [A1] Wait for valid order details
+ |
+ |-- Yes --> [2] Buyer information valid?
+             |-- No  --> [A2] Request buyer correction
+             |
+             |-- Yes --> [3] Stock available?
+                         |-- Yes     --> [A3] Confirm order and reserve stock
+                         |-- Partial --> [A4] Offer partial availability
+                         |-- No      --> [A5] Reject order and notify buyer</div>
+  <p class="caption">Figure 2: Decision tree for Process 5 Process Sales &amp; Availability.</p>
+
+  <h2>6.2 Branch and Outcome Explanation</h2>
+  <p>The root condition checks whether a usable product order has been received. If the order is missing or incomplete, the system waits for valid order details. If the order exists, the next condition checks buyer information. Invalid buyer information does not require a stock check because the order cannot proceed until the buyer record is corrected.</p>
+  <p>Only valid buyer orders reach the stock-availability check. Full stock produces order confirmation and stock reservation. Partial stock produces a partial availability offer. No stock produces rejection and buyer notification. The tree is appropriate because the sequence is important and the branches are asymmetric; some paths finish after one or two checks, while valid orders require a final inventory decision.</p>
+
+  <h1>7. Ambiguity Handling and Traceability</h1>
+  <h2>7.1 Ambiguities and Current Assumptions</h2>
+  <table>
+    <tr><th>Issue Found</th><th>Current Assumption</th><th>Next Action</th></tr>
+    <tr><td>Exact low-stock threshold is not finalized.</td><td>A stock exception is created when requested feed quantity exceeds available stock.</td><td>Confirm threshold values with the farm manager and update inventory rules.</td></tr>
+    <tr><td>Partial order policy is unclear.</td><td>Partial fulfillment is allowed only when the buyer accepts the reduced quantity.</td><td>Add a buyer confirmation rule to the sales form and order workflow.</td></tr>
+    <tr><td>Approval authority for rejected or held feed logs is not finalized.</td><td>A farm manager reviews held or rejected transactions.</td><td>Define approval authority, audit trail and escalation timing.</td></tr>
+  </table>
+  <p class="caption">Table 7: Ambiguities, assumptions and follow-up actions.</p>
+
+  <h2>7.2 Traceability to DFDs</h2>
+  <table>
+    <tr><th>Artifact</th><th>DFD Process</th><th>Inputs</th><th>Outputs</th><th>Data Stores</th></tr>
+    <tr><td>Structured English</td><td>2.4 Update Daily Operation Log</td><td>Validated Feed Log; Task Completion Status</td><td>Updated Operation Log; Operation Summary</td><td>D2 Operation Logs; D3 Inventory Records</td></tr>
+    <tr><td>Decision Table</td><td>2.2 Validate Batch &amp; Quantity</td><td>Daily Feed Logs; Required Feed Data</td><td>Validated Feed Log; Update Stock; Exception Notice</td><td>D1 Farm Structure; D3 Inventory Records</td></tr>
+    <tr><td>Decision Tree</td><td>5 Process Sales &amp; Availability</td><td>Product Orders; Inventory Data</td><td>Availability; Order Confirmation; Order Rejection</td><td>D5 Sales Orders; D3 Inventory Records</td></tr>
+  </table>
+  <p class="caption">Table 8: Traceability from structured analysis artifacts to DFD processes.</p>
+
+  <h2>7.3 Formatting and Numbering Check</h2>
+  <p>All tables and figures are numbered sequentially and include captions. The report uses A4 page layout, 12-point body text, 1.5 line spacing and one-inch margins. Each major section is titled and includes a concise narrative so the process specification and decision analysis work can be understood without referring to class notes.</p>
+
+  <h1>8. Conclusion</h1>
+  <p>This report completes the Lab 10 process specification and structured decision analysis for the Livestock Management System. Five candidate primitive processes were identified from the DFDs, and three were selected to cover the required logic types. Process 2.4 Update Daily Operation Log demonstrates sequential processing with iteration through Structured English. Process 2.2 Validate Batch &amp; Quantity demonstrates interacting validation rules through a simplified decision table. Process 5 Process Sales &amp; Availability demonstrates ordered branching through a decision tree.</p>
+  <p>The completed artifacts clarify the internal business rules behind the DFD processes, identify unresolved assumptions, and provide a code-ready reference for implementation. The analysis also confirms that the selected processes are traceable to the presentation DFDs, input/output flows and logical data stores.</p>
+
+  <h1>9. References</h1>
+  <p>[1] Go Paloks, <i>Livestock Management System: Presentation 10</i>, CSE 4408 System Analysis and Design Lab, Islamic University of Technology, July 29, 2026.</p>
+  <p>[2] Ajwad Abrar, <i>Process Specifications and Structured Decisions</i>, CSE 4407, Department of Computer Science and Engineering, Islamic University of Technology, July 22, 2026.</p>
+  <p>[3] Go Paloks, <i>Livestock Management System - Lab Report 8: Using Data Flow Diagrams</i>, CSE 4408 System Analysis and Design Lab, Islamic University of Technology, July 19, 2026.</p>
+</body>
+</html>
