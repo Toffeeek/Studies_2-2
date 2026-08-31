@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760">
+  <defs><style>.bg{fill:#f8fafc}.panel{fill:#fff;stroke:#cbd5e1;stroke-width:3;rx:8}.head{font:700 28px Arial,sans-serif;fill:#0f172a}.small{font:400 23px Arial,sans-serif;fill:#334155}.tiny{font:700 18px Arial,sans-serif;fill:#052e16}.item{fill:#eef6ff;stroke:#60a5fa;stroke-width:3;rx:8}.chosen{fill:#dcfce7;stroke:#16a34a}.rejected{fill:#fee2e2;stroke:#ef4444}.truck{fill:#e2e8f0;stroke:#334155;stroke-width:5}.load{fill:#22c55e}.empty{fill:#fff;stroke:#94a3b8;stroke-width:3}.arrow{stroke:#334155;stroke-width:4;fill:none;marker-end:url(#arrow)}</style><marker id="arrow" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M2,2 L12,7 L2,12 Z" fill="#334155"/></marker></defs>
+  <rect class="bg" width="1400" height="760"/>
+  <rect class="panel" x="75" y="70" width="390" height="575"/><text class="head" x="110" y="120">Relief Items</text>
+  <rect class="item chosen" x="115" y="155" width="290" height="75"/><text class="head" x="140" y="186">Medicine</text><text class="small" x="140" y="215">W2, V10</text>
+  <rect class="item chosen" x="115" y="255" width="290" height="75"/><text class="head" x="140" y="286">Water</text><text class="small" x="140" y="315">W4, V12</text>
+  <rect class="item rejected" x="115" y="355" width="290" height="75"/><text class="head" x="140" y="386">Blankets</text><text class="small" x="140" y="415">W5, V8</text>
+  <rect class="item chosen" x="115" y="455" width="290" height="75"/><text class="head" x="140" y="486">Dry Food</text><text class="small" x="140" y="515">W3, V9</text>
+  <rect class="item rejected" x="115" y="555" width="290" height="75"/><text class="head" x="140" y="586">Tools</text><text class="small" x="140" y="615">W6, V11</text>
+  <path class="arrow" d="M465 355 H565"/>
+  <rect class="panel" x="565" y="125" width="260" height="455"/><text class="head" x="600" y="175">Best Value</text><text class="head" x="600" y="250">31</text><text class="small" x="600" y="295">Capacity: 9</text><text class="small" x="600" y="340">Medicine</text><text class="small" x="600" y="378">Water</text><text class="small" x="600" y="416">Dry Food</text>
+  <path class="arrow" d="M825 355 H945"/>
+  <rect class="panel" x="945" y="115" width="365" height="485"/><text class="head" x="990" y="165">Vehicle Load</text><text class="small" x="990" y="205">Selected items only</text>
+  <g transform="translate(1005 295)"><rect class="truck" x="0" y="80" width="250" height="115" rx="8"/><rect class="truck" x="175" y="35" width="85" height="160" rx="8"/><circle cx="55" cy="215" r="28" fill="#334155"/><circle cx="205" cy="215" r="28" fill="#334155"/><rect class="load" x="18" y="100" width="55" height="75" rx="4"/><rect class="load" x="82" y="100" width="75" height="75" rx="4"/><rect class="load" x="166" y="100" width="48" height="75" rx="4"/><text class="tiny" x="24" y="144">Med</text><text class="tiny" x="91" y="144">Water</text><text class="tiny" x="172" y="144">Food</text></g>
+  <text class="small" x="110" y="710">Green items are selected; red items are skipped due to capacity.</text>
+</svg>
