@@ -85,7 +85,7 @@ int main() {
             cout << "Job " << slot[time];
         }
 
-        cout << '\n';`
+        cout << '\n';
     }
 
     cout << "\nNumber of selected jobs: " << selectedJobs;

@@ -19,9 +19,9 @@ struct Room
     int roomNumber;
 
     // Makes priority_queue behave like a min-heap
-    bool operator>(const Room& other) const
+    bool operator > (const Room& other) const
     {
-        return endTime > other.endTime;
+        return this->endTime > other.endTime;
     }
 };
 
@@ -69,7 +69,6 @@ int main() {
         if (!availableRooms.empty() &&
             availableRooms.top().endTime <= lecture.start)
         {
-
             Room room = availableRooms.top();
             availableRooms.pop();
 
@@ -83,8 +82,7 @@ int main() {
         {
             // No room is free, so create a new room
             schedule[roomCount].push_back(lecture);
-            availableRooms.push({lecture.end,roomCount});
-            roomCount++;
+            availableRooms.push({lecture.end,roomCount++});
         }
     }
 

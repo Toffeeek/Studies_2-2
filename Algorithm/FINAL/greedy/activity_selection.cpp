@@ -17,16 +17,12 @@ struct Task
 
 bool sortTasks(const Task& a, const Task& b)
 {
-    if (a.endTime < b.endTime)
+    if (a.endTime == b.endTime)
     {
-        return true;
-    }
-    else if (a.endTime > b.endTime)
-    {
-        return false;
+        return a.idx < b.idx;
     }
 
-    return a.idx < b.idx;
+    return a.endTime < b.endTime;
 }
 
 auto taskScheduler(const vector<Task>& tasks)
@@ -46,7 +42,6 @@ auto taskScheduler(const vector<Task>& tasks)
     }
 
     return selectedIndices;
-
 }
 
 int main()
